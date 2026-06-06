@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - claude/physical-therapy-website-HpMIq
+      - claude/super-mario-game-i8QhV
       - main
   workflow_dispatch:
 
