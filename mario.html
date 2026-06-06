@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Super Pixel Bros — A Classic Platformer</title>
+<style>
+  :root { --bg: #5c94fc; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #1a1a2e;
+    font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    color: #fff;
+    -webkit-user-select: none; user-select: none;
+    overflow: hidden;
+  }
+  #wrap {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; min-height: 100%; gap: 12px; padding: 12px;
+  }
+  h1 {
+    margin: 0; font-size: clamp(20px, 4vw, 34px); letter-spacing: 2px;
+    color: #fff; text-shadow: 3px 3px 0 #000, -1px -1px 0 #e52521;
+  }
+  #stage {
+    position: relative;
+    box-shadow: 0 0 0 4px #000, 0 12px 40px rgba(0,0,0,.6);
+    border-radius: 6px; overflow: hidden;
+    image-rendering: pixelated;
+  }
+  canvas { display: block; background: var(--bg); width: 100%; height: auto; }
+  #hud-note { font-size: 13px; opacity: .75; text-align: center; max-width: 760px; line-height: 1.5; }
+  kbd {
+    background: #000; border: 1px solid #444; border-bottom-width: 3px;
+    border-radius: 4px; padding: 1px 7px; font-family: monospace; font-size: 12px;
+  }
+  /* Overlay screens */
+  .overlay {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 18px;
+    background: rgba(10,12,30,.82); text-align: center; padding: 24px;
+    backdrop-filter: blur(2px);
+  }
+  .overlay h2 { margin: 0; font-size: clamp(26px, 6vw, 48px); text-shadow: 4px 4px 0 #000; letter-spacing: 2px; }
+  .overlay p { margin: 0; font-size: 15px; opacity: .85; line-height: 1.6; max-width: 460px; }
+  .btn {
+    font-family: inherit; font-weight: bold; font-size: 18px; letter-spacing: 1px;
+    color: #fff; background: #e52521; border: none; border-bottom: 5px solid #9b1410;
+    padding: 12px 30px; border-radius: 8px; cursor: pointer; text-transform: uppercase;
+    transition: transform .06s, filter .15s;
+  }
+  .btn:hover { filter: brightness(1.1); }
+  .btn:active { transform: translateY(3px); border-bottom-width: 2px; }
+  .hidden { display: none !important; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px 26px; justify-content: center; font-size: 13px; opacity: .85; }
+  .legend span b { color: #ffd34d; }
+  /* Touch controls */
+  #touch { position: absolute; inset: 0; display: none; pointer-events: none; }
+  .tbtn {
+    position: absolute; bottom: 16px; width: 64px; height: 64px;
+    background: rgba(255,255,255,.18); border: 2px solid rgba(255,255,255,.5);
+    border-radius: 50%; pointer-events: auto; display: flex; align-items: center;
+    justify-content: center; font-size: 26px; color: #fff; touch-action: none;
+  }
+  .tbtn:active { background: rgba(255,255,255,.4); }
+  #t-left  { left: 16px; }
+  #t-right { left: 92px; }
+  #t-jump  { right: 16px; background: rgba(229,37,33,.45); }
+  @media (pointer: coarse) { #touch { display: block; } }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <h1>★ SUPER PIXEL BROS ★</h1>
+  <div id="stage">
+    <canvas id="game" width="640" height="360"></canvas>
+
+    <!-- Touch controls -->
+    <div id="touch">
+      <div class="tbtn" id="t-left">◀</div>
+      <div class="tbtn" id="t-right">▶</div>
+      <div class="tbtn" id="t-jump">▲</div>
+    </div>
+
+    <!-- Start screen -->
+    <div class="overlay" id="screen-start">
+      <h2 style="color:#fdd;">SUPER PIXEL BROS</h2>
+      <p>Stomp the Koopas and Goombas, smash <b style="color:#ffd34d">? blocks</b> for coins,
+         dodge the pits, and reach the flagpole at the end of each world.</p>
+      <div class="legend">
+        <span><b>Move</b> ◀ ▶ / A D</span>
+        <span><b>Jump</b> Space / W / ▲</span>
+        <span><b>Run</b> Hold Shift</span>
+        <span><b>Pause</b> P</span>
+      </div>
+      <button class="btn" id="btn-start">Start Game</button>
+    </div>
+
+    <!-- Game over -->
+    <div class="overlay hidden" id="screen-over">
+      <h2 style="color:#ff6b6b;">GAME OVER</h2>
+      <p id="over-msg">The Koopas got the better of you this time.</p>
+      <button class="btn" id="btn-retry">Try Again</button>
+    </div>
+
+    <!-- Win -->
+    <div class="overlay hidden" id="screen-win">
+      <h2 style="color:#ffd34d;">YOU WIN!</h2>
+      <p id="win-msg">You cleared every world. A true plumbing legend!</p>
+      <button class="btn" id="btn-replay">Play Again</button>
+    </div>
+
+    <!-- Level clear flash -->
+    <div class="overlay hidden" id="screen-clear">
+      <h2 style="color:#9bff9b;">WORLD CLEAR!</h2>
+      <p id="clear-msg"></p>
+    </div>
+  </div>
+
+  <div id="hud-note">
+    <kbd>← →</kbd> or <kbd>A</kbd> <kbd>D</kbd> move &nbsp;•&nbsp;
+    <kbd>Space</kbd> / <kbd>W</kbd> jump &nbsp;•&nbsp;
+    <kbd>Shift</kbd> run &nbsp;•&nbsp; <kbd>P</kbd> pause.
+    Stomp enemies from above — touch them from the side and you lose a life!
+  </div>
+</div>
+
+<script src="mario.js"></script>
+</body>
+</html>
