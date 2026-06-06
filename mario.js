@@ -10,7 +10,7 @@
   const ctx = canvas.getContext('2d');
   ctx.imageSmoothingEnabled = false;
   const VW = canvas.width;   // viewport width  (640)
-  const VH = canvas.height;  // viewport height (360)
+  const VH = canvas.height;  // viewport height (480 = 15 tiles, full level height)
   const TILE = 32;           // tile size in px
 
   // ---------- Tunable physics ----------
@@ -959,21 +959,33 @@
     ctx.fillStyle = 'rgba(0,0,0,.35)';
     ctx.fillRect(0, 0, VW, 26);
 
+    // Left zone: score, then coin counter placed right after it (measured so it never overlaps)
     ctx.fillStyle = '#fff';
-    ctx.fillText('SCORE ' + pad(game.score, 6), 14, 6);
-
-    // coin icon
-    ctx.fillStyle = '#ffd34d'; ctx.fillRect(184, 7, 9, 13);
-    ctx.fillStyle = '#c9920e'; ctx.fillRect(187, 10, 3, 7);
+    const scoreTxt = 'SCORE ' + pad(game.score, 6);
+    ctx.fillText(scoreTxt, 14, 6);
+    const coinX = 14 + ctx.measureText(scoreTxt).width + 18;
+    ctx.fillStyle = '#ffd34d'; ctx.fillRect(coinX, 7, 9, 13);
+    ctx.fillStyle = '#c9920e'; ctx.fillRect(coinX + 3, 10, 3, 7);
     ctx.fillStyle = '#fff';
-    ctx.fillText('×' + pad(game.coins, 2), 198, 6);
+    const coinTxt = '×' + pad(game.coins, 2);
+    ctx.fillText(coinTxt, coinX + 14, 6);
+    const leftEnd = coinX + 14 + ctx.measureText(coinTxt).width;
 
-    ctx.textAlign = 'center';
-    ctx.fillText((game.def ? game.def.name : ''), VW / 2, 6);
-
+    // Right zone: lives + time
     ctx.textAlign = 'right';
-    ctx.fillStyle = '#fff';
-    ctx.fillText('LIVES ' + game.lives + '   TIME ' + pad(game.time, 3), VW - 14, 6);
+    const rightTxt = 'LIVES ' + game.lives + '   TIME ' + pad(game.time, 3);
+    ctx.fillText(rightTxt, VW - 14, 6);
+    const rightStart = VW - 14 - ctx.measureText(rightTxt).width;
+
+    // Center zone: world name — drop the subtitle if it would crowd the side stats
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 13px "Courier New", monospace';
+    let title = game.def ? game.def.name : '';
+    if (VW / 2 - ctx.measureText(title).width / 2 < leftEnd + 8 ||
+        VW / 2 + ctx.measureText(title).width / 2 > rightStart - 8) {
+      title = title.split(' · ')[0];   // "World 1-1 · Grass Plains" -> "World 1-1"
+    }
+    ctx.fillText(title, VW / 2, 7);
     ctx.restore();
   }
 
