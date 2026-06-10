@@ -4,215 +4,262 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0a0a14" />
-<meta name="description" content="LocalRank — a free local SEO keyword generator. Enter a website or keywords and instantly generate local, long-tail, and intent-based keywords mapped to the pages of your site." />
-<title>LocalRank — Local SEO Keyword Generator</title>
+<meta name="description" content="LocalRank — a free local SEO keyword + blog topic generator. Enter a website or keywords and instantly generate local & intent keywords, blog topics, and EEAT-ready content briefs." />
+<title>LocalRank — Local SEO Keyword & Content Engine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
 :root{
-  --bg:#070711;
-  --bg2:#0d0d1f;
-  --ink:#f4f5ff;
-  --muted:#a7a9c7;
-  --line:rgba(255,255,255,.10);
-  --glass:rgba(255,255,255,.045);
-  --glass2:rgba(255,255,255,.07);
-  --c1:#7c5cff;   /* violet */
-  --c2:#19e3c4;   /* teal   */
-  --c3:#ff5c8a;   /* pink   */
-  --c4:#ffd166;   /* amber  */
-  --radius:18px;
-  --shadow:0 22px 60px -22px rgba(0,0,0,.75);
-  --speed:.45s;
+  --bg:#070711;--bg2:#0d0d1f;--ink:#f4f5ff;--muted:#a7a9c7;
+  --line:rgba(255,255,255,.10);--glass:rgba(255,255,255,.045);--glass2:rgba(255,255,255,.07);
+  --c1:#7c5cff;--c2:#19e3c4;--c3:#ff5c8a;--c4:#ffd166;--c5:#7be0ff;
+  --radius:18px;--shadow:0 22px 60px -22px rgba(0,0,0,.75);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;font-family:"Inter",system-ui,sans-serif;color:var(--ink);
-  background:var(--bg);overflow-x:hidden;min-height:100vh;line-height:1.5;
-  -webkit-font-smoothing:antialiased;
-}
+body{margin:0;font-family:"Inter",system-ui,sans-serif;color:var(--ink);background:var(--bg);
+  overflow-x:hidden;min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased}
 h1,h2,h3,.brand{font-family:"Sora",system-ui,sans-serif}
 
-/* ---------- animated background ---------- */
+/* background */
 .bg{position:fixed;inset:0;z-index:-3;overflow:hidden;background:
-   radial-gradient(120% 120% at 50% -10%, #14122e 0%, var(--bg) 55%, #04040b 100%);}
-.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;
-   will-change:transform;transition:transform .35s cubic-bezier(.2,.8,.2,1);}
-.blob.b1{width:46vw;height:46vw;background:var(--c1);top:-12vw;left:-8vw;}
+  radial-gradient(120% 120% at 50% -10%, #14122e 0%, var(--bg) 55%, #04040b 100%)}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;will-change:transform;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.blob.b1{width:46vw;height:46vw;background:var(--c1);top:-12vw;left:-8vw}
 .blob.b2{width:40vw;height:40vw;background:var(--c2);top:18vh;right:-12vw;opacity:.4}
 .blob.b3{width:38vw;height:38vw;background:var(--c3);bottom:-14vw;left:24vw;opacity:.38}
 .grid-overlay{position:fixed;inset:0;z-index:-2;pointer-events:none;
-   background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-   linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-   background-size:46px 46px;mask:radial-gradient(120% 90% at 50% 0%,#000 35%,transparent 80%)}
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:46px 46px;
+  mask:radial-gradient(120% 90% at 50% 0%,#000 35%,transparent 80%)}
 #fx{position:fixed;inset:0;z-index:9;pointer-events:none}
 
-/* ---------- custom cursor (desktop) ---------- */
-.cursor,.cursor-dot{position:fixed;top:0;left:0;z-index:50;pointer-events:none;
-   border-radius:50%;mix-blend-mode:screen;transform:translate(-50%,-50%)}
-.cursor{width:34px;height:34px;border:1.5px solid rgba(124,92,255,.8);
-   transition:width .2s,height .2s,background .2s;backdrop-filter:blur(1px)}
+/* cursor */
+.cursor,.cursor-dot{position:fixed;top:0;left:0;z-index:50;pointer-events:none;border-radius:50%;
+  mix-blend-mode:screen;transform:translate(-50%,-50%)}
+.cursor{width:34px;height:34px;border:1.5px solid rgba(124,92,255,.8);transition:width .2s,height .2s,background .2s}
 .cursor.hot{width:60px;height:60px;background:rgba(124,92,255,.18);border-color:var(--c2)}
 .cursor-dot{width:6px;height:6px;background:var(--c2)}
 @media (hover:none){.cursor,.cursor-dot{display:none}}
 
-/* ---------- layout ---------- */
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
-header.top{display:flex;align-items:center;justify-content:space-between;
-   padding:22px 0 6px;position:relative;z-index:5}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:22px 0 6px;position:relative;z-index:5}
 .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.12rem;letter-spacing:-.01em}
 .brand .mark{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
-   background:linear-gradient(135deg,var(--c1),var(--c3));box-shadow:0 8px 22px -8px var(--c1);
-   font-size:1.05rem}
+  background:linear-gradient(135deg,var(--c1),var(--c3));box-shadow:0 8px 22px -8px var(--c1);font-size:1.05rem}
 .brand small{display:block;font-family:"Inter";font-weight:500;font-size:.66rem;color:var(--muted);letter-spacing:.18em;text-transform:uppercase}
 .byline{font-size:.72rem;color:var(--muted);text-align:right}
 
-/* ---------- hero ---------- */
 .hero{text-align:center;padding:42px 0 14px;position:relative;z-index:4}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;
-   background:var(--glass);border:1px solid var(--line);font-size:.74rem;color:var(--muted);
-   margin-bottom:20px;backdrop-filter:blur(8px)}
-.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--c2);box-shadow:0 0 0 0 var(--c2);animation:ping 2.4s infinite}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--glass);
+  border:1px solid var(--line);font-size:.74rem;color:var(--muted);margin-bottom:20px;backdrop-filter:blur(8px)}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--c2);animation:ping 2.4s infinite}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(25,227,196,.5)}70%{box-shadow:0 0 0 9px rgba(25,227,196,0)}100%{box-shadow:0 0 0 0 rgba(25,227,196,0)}}
 .hero h1{font-size:clamp(2.1rem,7vw,4rem);line-height:1.02;margin:0 0 14px;letter-spacing:-.03em;font-weight:800}
 .hero h1 .grad{background:linear-gradient(110deg,var(--c2),var(--c1) 55%,var(--c3));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p{color:var(--muted);max-width:560px;margin:0 auto;font-size:clamp(.95rem,2.6vw,1.08rem)}
 
-/* ---------- search ---------- */
 .search{margin:30px auto 6px;max-width:680px;position:relative;z-index:6}
-.search-box{display:flex;gap:10px;flex-direction:column;background:var(--glass2);
-   border:1px solid var(--line);border-radius:22px;padding:12px;backdrop-filter:blur(16px);
-   box-shadow:var(--shadow);position:relative;overflow:hidden}
+.search-box{display:flex;gap:10px;flex-direction:column;background:var(--glass2);border:1px solid var(--line);
+  border-radius:22px;padding:12px;backdrop-filter:blur(16px);box-shadow:var(--shadow);position:relative;overflow:hidden}
 .search-box::before{content:"";position:absolute;inset:0;border-radius:22px;padding:1px;
-   background:linear-gradient(120deg,var(--c2),var(--c1),var(--c3));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s}
+  background:linear-gradient(120deg,var(--c2),var(--c1),var(--c3));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s}
 .search-box.focus::before{opacity:.9}
 .field{display:flex;align-items:center;gap:12px;width:100%}
 .field svg{flex:0 0 auto;color:var(--muted)}
-#q{flex:1;background:transparent;border:0;outline:0;color:var(--ink);font-size:1.05rem;
-   font-family:inherit;padding:14px 2px;min-width:0}
+#q{flex:1;background:transparent;border:0;outline:0;color:var(--ink);font-size:1.05rem;font-family:inherit;padding:14px 2px;min-width:0}
 #q::placeholder{color:#6e7099}
-.btn-gen{flex:0 0 auto;border:0;cursor:pointer;color:#0a0a14;font-weight:700;font-family:"Sora";
-   font-size:1rem;padding:15px 26px;border-radius:14px;
-   background:linear-gradient(120deg,var(--c2),var(--c1));
-   box-shadow:0 12px 30px -10px var(--c1);transition:transform .15s,box-shadow .25s;
-   will-change:transform;position:relative;overflow:hidden}
-.btn-gen:hover{box-shadow:0 16px 38px -10px var(--c1)}
+.btn-gen{flex:0 0 auto;border:0;cursor:pointer;color:#0a0a14;font-weight:700;font-family:"Sora";font-size:1rem;
+  padding:15px 26px;border-radius:14px;background:linear-gradient(120deg,var(--c2),var(--c1));
+  box-shadow:0 12px 30px -10px var(--c1);transition:transform .15s,box-shadow .25s;will-change:transform;position:relative;overflow:hidden}
 .btn-gen:active{transform:scale(.96)}
 @media(min-width:620px){.search-box{flex-direction:row;align-items:center}}
 
-/* location row */
 .loc-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;align-items:center}
-.loc-chip{display:inline-flex;align-items:center;gap:8px;background:var(--glass);
-   border:1px solid var(--line);border-radius:999px;padding:6px 10px 6px 14px;font-size:.82rem;color:var(--muted)}
+.loc-chip{display:inline-flex;align-items:center;gap:8px;background:var(--glass);border:1px solid var(--line);
+  border-radius:999px;padding:6px 10px 6px 14px;font-size:.82rem;color:var(--muted)}
 .loc-chip svg{color:var(--c2)}
-.loc-chip input{background:transparent;border:0;outline:0;color:var(--ink);font-family:inherit;
-   font-size:.85rem;width:160px;padding:4px 6px;border-radius:8px}
+.loc-chip input{background:transparent;border:0;outline:0;color:var(--ink);font-family:inherit;font-size:.85rem;width:160px;padding:4px 6px;border-radius:8px}
 .loc-chip input:focus{background:rgba(255,255,255,.06)}
 .hint{font-size:.72rem;color:#6e7099}
 
-/* quick examples */
 .examples{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
-.ex{cursor:pointer;font-size:.78rem;color:var(--muted);background:var(--glass);
-   border:1px solid var(--line);padding:6px 13px;border-radius:999px;transition:.2s;will-change:transform}
+.ex{cursor:pointer;font-size:.78rem;color:var(--muted);background:var(--glass);border:1px solid var(--line);
+  padding:6px 13px;border-radius:999px;transition:.2s;will-change:transform}
 .ex:hover{color:var(--ink);border-color:var(--c2);transform:translateY(-2px)}
 
-/* ---------- results ---------- */
-.results{margin:34px auto 80px;position:relative;z-index:3;opacity:0;transform:translateY(18px);
-   transition:opacity .6s,transform .6s}
+.results{margin:34px auto 80px;position:relative;z-index:3;opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
 .results.show{opacity:1;transform:none}
 .summary{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px}
 .summary .id{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .tag{font-size:.74rem;padding:5px 11px;border-radius:999px;background:var(--glass);border:1px solid var(--line);color:var(--muted)}
 .tag b{color:var(--ink);font-weight:600}
 .tag.live{color:var(--c2);border-color:rgba(25,227,196,.4)}
-.actions{display:flex;gap:8px}
-.act{cursor:pointer;font-size:.78rem;font-weight:600;font-family:inherit;color:var(--ink);
-   background:var(--glass);border:1px solid var(--line);padding:8px 14px;border-radius:11px;transition:.2s}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.act{cursor:pointer;font-size:.78rem;font-weight:600;font-family:inherit;color:var(--ink);background:var(--glass);
+  border:1px solid var(--line);padding:8px 14px;border-radius:11px;transition:.2s}
 .act:hover{border-color:var(--c2);background:var(--glass2)}
 
-/* tabs */
-.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:20px;
-   scrollbar-width:none;-webkit-overflow-scrolling:touch}
+/* toggle switch */
+.switch-wrap{display:inline-flex;align-items:center;gap:9px;font-size:.78rem;color:var(--muted);
+  background:var(--glass);border:1px solid var(--line);padding:6px 12px;border-radius:11px;cursor:pointer;user-select:none}
+.switch{position:relative;width:42px;height:23px;border-radius:999px;background:rgba(255,255,255,.12);transition:.3s;flex:0 0 auto}
+.switch::after{content:"";position:absolute;top:2.5px;left:2.5px;width:18px;height:18px;border-radius:50%;
+  background:#fff;transition:.3s cubic-bezier(.3,1.4,.5,1)}
+.switch-wrap.on .switch{background:linear-gradient(120deg,var(--c2),var(--c1))}
+.switch-wrap.on .switch::after{transform:translateX(19px)}
+.switch-wrap.on{color:var(--ink);border-color:rgba(25,227,196,.4)}
+
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;cursor:pointer;font-family:"Sora";font-weight:600;font-size:.84rem;
-   padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--glass);
-   color:var(--muted);transition:.25s;white-space:nowrap;position:relative}
+.tab{flex:0 0 auto;cursor:pointer;font-family:"Sora";font-weight:600;font-size:.84rem;padding:10px 16px;border-radius:12px;
+  border:1px solid var(--line);background:var(--glass);color:var(--muted);transition:.25s;white-space:nowrap;position:relative}
 .tab .n{font-size:.7rem;opacity:.7;margin-left:6px}
+.tab.pulse{animation:tpulse .6s}
+@keyframes tpulse{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
 .tab[data-accent="local"].on{color:#04040b;background:linear-gradient(120deg,var(--c2),#5ef0d8);border-color:transparent}
+.tab[data-accent="topics"].on{color:#04040b;background:linear-gradient(120deg,#ffe29a,var(--c4));border-color:transparent}
 .tab[data-accent="info"].on{color:#04040b;background:linear-gradient(120deg,var(--c4),#ffe29a);border-color:transparent}
 .tab[data-accent="commercial"].on{color:#04040b;background:linear-gradient(120deg,#9b8bff,var(--c1));border-color:transparent}
 .tab[data-accent="transactional"].on{color:#fff;background:linear-gradient(120deg,var(--c3),#ff86a8);border-color:transparent}
 .tab[data-accent="branded"].on{color:#04040b;background:linear-gradient(120deg,#7be0ff,#9b8bff);border-color:transparent}
 .tab[data-accent="pagemap"].on{color:#fff;background:linear-gradient(120deg,var(--c1),var(--c3));border-color:transparent}
 
-/* panels */
 .panel{display:none;animation:fade .5s}
 .panel.on{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.panel-lead{color:var(--muted);font-size:.9rem;margin:-4px 0 18px;max-width:680px}
+.panel-lead{color:var(--muted);font-size:.9rem;margin:-4px 0 18px;max-width:700px}
+.panel-lead b{color:var(--ink)}
 
 .chips{display:flex;flex-wrap:wrap;gap:9px}
-.chip{cursor:pointer;font-size:.86rem;padding:9px 14px;border-radius:12px;background:var(--glass);
-   border:1px solid var(--line);color:var(--ink);transition:transform .18s,border-color .2s,background .2s;
-   display:inline-flex;align-items:center;gap:9px;will-change:transform;
-   opacity:0;transform:translateY(14px) scale(.96)}
+.chip{cursor:pointer;font-size:.86rem;padding:9px 12px 9px 14px;border-radius:12px;background:var(--glass);
+  border:1px solid var(--line);color:var(--ink);transition:transform .18s,border-color .2s,background .2s;
+  display:inline-flex;align-items:center;gap:9px;will-change:transform;opacity:0;transform:translateY(14px) scale(.96)}
 .chip.in{opacity:1;transform:none}
 .chip:hover{border-color:var(--c2);background:var(--glass2);transform:translateY(-3px)}
-.chip .cp{opacity:.4;transition:.2s}
-.chip:hover .cp{opacity:1;color:var(--c2)}
+.chip .cp{opacity:.4;transition:.2s;padding:2px;border-radius:5px}
+.chip .cp:hover{opacity:1;color:var(--c2);background:rgba(255,255,255,.08)}
 .chip.copied{border-color:var(--c2);background:rgba(25,227,196,.12)}
 .chip .tag-i{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:6px;font-weight:700}
+.chip .spark{opacity:.55;transition:.2s}
+.chip:hover .spark{opacity:1}
 
-/* page-map cards */
+/* cloud */
+.cloud{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center;padding:14px 4px;min-height:120px}
+.cw{cursor:pointer;line-height:1;font-weight:600;font-family:"Sora";transition:transform .2s,filter .2s,text-shadow .2s;
+  will-change:transform;white-space:nowrap;opacity:0;animation:cwin .5s forwards}
+@keyframes cwin{to{opacity:1}}
+.cw:hover{transform:scale(1.18) translateY(-2px);filter:brightness(1.25);text-shadow:0 6px 22px currentColor;z-index:2}
+.cw .f{display:inline-block;animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* page map */
 .pm-grid{display:grid;gap:16px;grid-template-columns:1fr}
 @media(min-width:740px){.pm-grid{grid-template-columns:1fr 1fr}}
-.pm-card{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);
-   padding:18px;transition:transform .25s,border-color .25s;will-change:transform}
+.pm-card{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:18px;transition:transform .25s,border-color .25s;will-change:transform}
 .pm-card h3{margin:0 0 4px;font-size:1.02rem;display:flex;align-items:center;gap:9px}
 .pm-card .ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:.95rem;flex:0 0 auto}
 .pm-card .desc{color:var(--muted);font-size:.78rem;margin:0 0 13px}
 .pm-card .chips .chip{font-size:.8rem;padding:7px 11px}
 
+/* topics */
+.topics-grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:720px){.topics-grid{grid-template-columns:1fr 1fr}}
+.topic{background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px;
+  transition:transform .25s,border-color .25s;display:flex;flex-direction:column;gap:11px;opacity:0;transform:translateY(14px)}
+.topic.in{opacity:1;transform:none}
+.topic:hover{border-color:rgba(255,209,102,.45);transform:translateY(-3px)}
+.topic .tt{font-family:"Sora";font-weight:700;font-size:1rem;line-height:1.28;letter-spacing:-.01em}
+.topic .meta{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.topic .badge{font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;padding:3px 8px;border-radius:6px}
+.topic .src{font-size:.7rem;color:var(--muted)}
+.topic .row{display:flex;gap:8px;margin-top:auto}
+.btn-content{cursor:pointer;border:0;font-family:"Sora";font-weight:700;font-size:.82rem;color:#04040b;
+  background:linear-gradient(120deg,var(--c4),#ffe29a);padding:10px 15px;border-radius:11px;flex:1;transition:transform .15s,filter .2s;position:relative;overflow:hidden}
+.btn-content:hover{filter:brightness(1.05)}
+.btn-content:active{transform:scale(.97)}
+.btn-mini{cursor:pointer;border:1px solid var(--line);background:var(--glass);color:var(--ink);border-radius:11px;padding:10px 12px;font-size:.82rem;transition:.2s}
+.btn-mini:hover{border-color:var(--c2)}
+
 footer{padding:26px 0 40px;text-align:center;color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);margin-top:30px}
 footer a{color:var(--c2);text-decoration:none}
 
-/* toast */
-.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(30px);
-   background:#14122e;border:1px solid var(--line);color:var(--ink);padding:12px 20px;border-radius:13px;
-   font-size:.86rem;box-shadow:var(--shadow);opacity:0;transition:.35s;z-index:60;pointer-events:none;display:flex;gap:9px;align-items:center}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(30px);background:#14122e;border:1px solid var(--line);
+  color:var(--ink);padding:12px 20px;border-radius:13px;font-size:.86rem;box-shadow:var(--shadow);opacity:0;transition:.35s;z-index:80;pointer-events:none;display:flex;gap:9px;align-items:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast b{color:var(--c2)}
-
 .empty{text-align:center;color:#6e7099;padding:30px;font-size:.9rem}
 .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rip .6s ease-out;pointer-events:none}
 @keyframes rip{to{transform:scale(4);opacity:0}}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;padding:18px;
+  background:rgba(4,4,11,.66);backdrop-filter:blur(7px)}
+.modal.on{display:flex;animation:fade .3s}
+.modal-card{background:linear-gradient(180deg,#14122e,#0c0b1d);border:1px solid var(--line);border-radius:20px;
+  width:100%;max-width:640px;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow);position:relative}
+.modal-card.wide{max-width:780px}
+.modal-head{position:sticky;top:0;background:linear-gradient(180deg,#14122e,rgba(20,18,46,.92));backdrop-filter:blur(6px);
+  padding:20px 22px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;z-index:2}
+.modal-head h2{margin:0;font-size:1.15rem}
+.modal-head p{margin:5px 0 0;color:var(--muted);font-size:.82rem}
+.x{cursor:pointer;border:1px solid var(--line);background:var(--glass);color:var(--ink);width:34px;height:34px;border-radius:10px;font-size:1.1rem;flex:0 0 auto;transition:.2s}
+.x:hover{border-color:var(--c3);color:var(--c3)}
+.modal-body{padding:20px 22px 24px}
+.eeat-q{margin-bottom:18px}
+.eeat-q label{display:block;font-family:"Sora";font-weight:600;font-size:.9rem;margin-bottom:4px}
+.eeat-q .sub{color:var(--muted);font-size:.76rem;margin-bottom:9px}
+.eeat-q .pillset{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.eeat-q .pp{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(124,92,255,.18);color:#c7bcff}
+.eeat-q textarea{width:100%;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:12px;color:var(--ink);
+  font-family:inherit;font-size:.92rem;padding:12px;resize:vertical;min-height:78px;outline:0}
+.eeat-q textarea:focus{border-color:var(--c2)}
+.modal-foot{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.btn-primary{cursor:pointer;border:0;font-family:"Sora";font-weight:700;font-size:.92rem;color:#04040b;flex:1;min-width:160px;
+  background:linear-gradient(120deg,var(--c2),var(--c1));padding:14px 18px;border-radius:12px;transition:transform .15s,filter .2s}
+.btn-primary:hover{filter:brightness(1.05)}.btn-primary:active{transform:scale(.98)}
+.btn-ghost{cursor:pointer;border:1px solid var(--line);background:var(--glass);color:var(--ink);font-family:inherit;font-weight:600;
+  font-size:.85rem;padding:12px 16px;border-radius:12px;transition:.2s}
+.btn-ghost:hover{border-color:var(--c2)}
+
+/* content brief */
+.brief h1.bt{font-size:1.4rem;margin:0 0 4px;line-height:1.2}
+.brief .briefmeta{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 18px}
+.brief .bm{font-size:.7rem;padding:4px 10px;border-radius:999px;background:var(--glass);border:1px solid var(--line);color:var(--muted)}
+.brief .bm b{color:var(--c2);font-weight:600}
+.brief section{margin:0 0 18px;padding:14px 16px;background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:13px}
+.brief section h3{margin:0 0 8px;font-size:.82rem;text-transform:uppercase;letter-spacing:.09em;color:var(--c2)}
+.brief p.g{margin:0 0 8px;color:var(--ink);font-size:.9rem}
+.brief .small{color:var(--muted);font-size:.82rem}
+.brief ul,.brief ol{margin:6px 0 0;padding-left:20px}
+.brief li{margin:5px 0;font-size:.9rem}
+.brief li::marker{color:var(--c1)}
+.brief .eeatbox{border-left:3px solid var(--c4);background:rgba(255,209,102,.07)}
+.brief .ck li{list-style:none;position:relative;padding-left:24px}
+.brief .ck li::before{content:"\2713";position:absolute;left:0;color:var(--c2);font-weight:700}
+.brief .codeword{color:var(--c5);font-weight:600}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="bg" id="bg">
-  <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
-</div>
+<div class="bg" id="bg"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
 <div class="grid-overlay"></div>
 <canvas id="fx"></canvas>
-<div class="cursor" id="cur"></div>
-<div class="cursor-dot" id="curDot"></div>
+<div class="cursor" id="cur"></div><div class="cursor-dot" id="curDot"></div>
 
 <div class="wrap">
   <header class="top">
-    <div class="brand">
-      <span class="mark">⚡</span>
-      <span>LocalRank<small>by Janszen Media</small></span>
-    </div>
-    <div class="byline">Local SEO Keyword Engine<br>Free • Private • Instant</div>
+    <div class="brand"><span class="mark">⚡</span><span>LocalRank<small>by Janszen Media</small></span></div>
+    <div class="byline">Local SEO + Content Engine<br>Free • Private • Instant</div>
   </header>
 
   <section class="hero">
-    <span class="pill"><span class="dot"></span> Built for local businesses</span>
-    <h1>Find the keywords that bring<br><span class="grad">local customers</span> to your door</h1>
-    <p>Type your website or what you do. We generate local, long-tail, and intent-based keyword sets — mapped to the exact pages of your site.</p>
+    <span class="pill"><span class="dot"></span> Keywords → Blog Topics → EEAT Content</span>
+    <h1>From a single search to a<br><span class="grad">full content plan</span></h1>
+    <p>Type your website or what you do. Get local keywords, traffic-ready blog topics, and EEAT-optimized content briefs — all mapped to your site's pages.</p>
 
     <form class="search" id="form" autocomplete="off">
       <div class="search-box" id="sbox">
@@ -241,13 +288,17 @@ footer a{color:var(--c2);text-decoration:none}
         <span class="tag live"><b id="sCount">0</b> keywords</span>
       </div>
       <div class="actions">
-        <button class="act" id="copyAll">Copy current tab</button>
+        <div class="switch-wrap" id="cloudToggle" role="switch" aria-checked="false" tabindex="0" title="Toggle interactive keyword cloud">
+          <span>☁️ Cloud view</span><span class="switch"></span>
+        </div>
+        <button class="act" id="copyAll">Copy tab</button>
         <button class="act" id="csv">Export CSV</button>
       </div>
     </div>
 
     <div class="tabs" id="tabs">
       <button class="tab on" data-accent="local" data-tab="local" type="button">📍 Local <span class="n" id="nLocal"></span></button>
+      <button class="tab" data-accent="topics" data-tab="topics" type="button">📰 Blog Topics <span class="n" id="nTopics"></span></button>
       <button class="tab" data-accent="info" data-tab="info" type="button">📝 Informational <span class="n" id="nInfo"></span></button>
       <button class="tab" data-accent="commercial" data-tab="commercial" type="button">🔎 Commercial <span class="n" id="nCommercial"></span></button>
       <button class="tab" data-accent="transactional" data-tab="transactional" type="button">🛒 Transactional <span class="n" id="nTransactional"></span></button>
@@ -255,477 +306,477 @@ footer a{color:var(--c2);text-decoration:none}
       <button class="tab" data-accent="pagemap" data-tab="pagemap" type="button">🗺️ Page Map</button>
     </div>
 
-    <div class="panel on" data-panel="local"><p class="panel-lead">High-intent "near me" and "[city]" searches — these power your <b>homepage</b> and <b>service-area pages</b>.</p><div class="chips"></div></div>
-    <div class="panel" data-panel="info"><p class="panel-lead">Long-tail, question &amp; "cost of" searches — fuel for your <b>blog, how-to guides, and cost articles</b>.</p><div class="chips"></div></div>
-    <div class="panel" data-panel="commercial"><p class="panel-lead">Comparison &amp; "best of" searches — buyers researching who to hire. Great for <b>service pages</b> and comparison posts.</p><div class="chips"></div></div>
-    <div class="panel" data-panel="transactional"><p class="panel-lead">Ready-to-buy searches — your <b>service pages</b> and conversion-focused landing pages.</p><div class="chips"></div></div>
-    <div class="panel" data-panel="branded"><p class="panel-lead">Searches for your business by name — protect and own your <b>brand SERP</b>.</p><div class="chips"></div></div>
+    <div class="panel on" data-panel="local"><p class="panel-lead">High-intent "near me" and "[city]" searches — power your <b>homepage</b> and <b>service-area pages</b>. Tap any keyword to spin it into a blog topic ✨.</p><div class="view"></div></div>
+    <div class="panel" data-panel="topics"><p class="panel-lead">Traffic-ready blog titles generated from your keywords. Hit <b>Generate content</b> to capture your EEAT expertise and build a full SEO brief.</p><div class="topics-grid" id="topicsGrid"></div></div>
+    <div class="panel" data-panel="info"><p class="panel-lead">Long-tail, question &amp; "cost of" searches — fuel for your <b>blog, how-to guides, and cost articles</b>.</p><div class="view"></div></div>
+    <div class="panel" data-panel="commercial"><p class="panel-lead">Comparison &amp; "best of" searches — buyers researching who to hire. Great for <b>service pages</b> and comparison posts.</p><div class="view"></div></div>
+    <div class="panel" data-panel="transactional"><p class="panel-lead">Ready-to-buy searches — your <b>service pages</b> and conversion landing pages.</p><div class="view"></div></div>
+    <div class="panel" data-panel="branded"><p class="panel-lead">Searches for your business by name — own your <b>brand SERP</b>.</p><div class="view"></div></div>
     <div class="panel" data-panel="pagemap"><p class="panel-lead">Your keywords organized into the pages you should actually build.</p><div class="pm-grid" id="pmGrid"></div></div>
   </section>
 </div>
 
-<footer>
-  <div class="wrap">LocalRank — a free tool by <a href="https://janszenmedia.com" target="_blank" rel="noopener">Janszen Media</a>. Runs entirely in your browser. No data leaves your device except an anonymous IP lookup for your city.</div>
-</footer>
+<footer><div class="wrap">LocalRank — a free tool by <a href="https://janszenmedia.com" target="_blank" rel="noopener">Janszen Media</a>. Runs entirely in your browser. No data leaves your device except an anonymous IP lookup for your city.</div></footer>
+
+<!-- EEAT modal -->
+<div class="modal" id="eeatModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><h2>✍️ Make it rank: add your expertise</h2><p id="eeatTopic">Google rewards real experience. Two quick answers shape your content brief.</p></div>
+      <button class="x" id="eeatX" type="button">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="eeat-q">
+        <label>1. Share a real experience or result</label>
+        <div class="pillset"><span class="pp">Experience</span></div>
+        <div class="sub">A project you completed, a problem you solved, a before/after, a lesson learned firsthand. This becomes the story that makes your post credible.</div>
+        <textarea id="eeatExp" placeholder="e.g. Last spring we redesigned a 1/4-acre backyard in [city] — replaced dying sod with drought-tolerant landscaping and cut the client's water bill ~30%…"></textarea>
+      </div>
+      <div class="eeat-q">
+        <label>2. What makes you credible?</label>
+        <div class="pillset"><span class="pp">Expertise</span><span class="pp">Authoritativeness</span><span class="pp">Trust</span></div>
+        <div class="sub">Years in business, licenses &amp; certifications, awards, number of customers served, warranties/guarantees, associations.</div>
+        <textarea id="eeatCred" placeholder="e.g. Licensed & insured, 12 years in business, 600+ local projects, certified landscape designer, 5-star Google rating, 2-year workmanship guarantee."></textarea>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-primary" id="eeatGo" type="button">Generate content brief →</button>
+        <button class="btn-ghost" id="eeatSkip" type="button">Skip</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- content brief modal -->
+<div class="modal" id="briefModal">
+  <div class="modal-card wide">
+    <div class="modal-head">
+      <div><h2>📄 Content Brief</h2><p>Outline, on-page SEO, FAQ schema &amp; EEAT signals — ready for your writer.</p></div>
+      <button class="x" id="briefX" type="button">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="brief" id="briefBody"></div>
+      <div class="modal-foot">
+        <button class="btn-primary" id="briefCopy" type="button">Copy brief</button>
+        <button class="btn-ghost" id="briefMd" type="button">Export Markdown</button>
+        <button class="btn-ghost" id="briefEdit" type="button">Edit expertise</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"><b>✓</b><span id="toastMsg">Copied</span></div>
 
 <script>
-/* =========================================================================
-   LocalRank — offline local-SEO keyword engine
-   ========================================================================= */
-
-/* ---- 1. industry knowledge base ------------------------------------- */
-const INDUSTRIES = {
-  landscaping:{label:"Landscaping & Lawn Care",core:"landscaping",
-    match:["landscap","lawn","garden","yard","turf","hardscape","irrigation","patio","sod","mulch","nursery","outdoor living"],
-    services:["landscaping","landscape design","lawn care","lawn mowing","lawn maintenance","hardscaping","patio installation","retaining walls","irrigation systems","sod installation","tree trimming","garden design","outdoor lighting","yard cleanup","mulch installation","artificial turf"]},
-  plumbing:{label:"Plumbing",core:"plumbing",
-    match:["plumb","drain","sewer","water heater","pipe","leak","faucet","sump"],
-    services:["plumbing","drain cleaning","water heater repair","water heater installation","leak detection","sewer line repair","pipe repair","faucet installation","sump pump repair","toilet repair","repiping","gas line installation"]},
-  hvac:{label:"HVAC / Heating & Cooling",core:"HVAC",
-    match:["hvac","heating","cooling","air condition","furnace","ac repair","ductless","heat pump","ventilation"],
-    services:["HVAC repair","air conditioning repair","AC installation","furnace repair","heating repair","heat pump installation","duct cleaning","HVAC maintenance","ductless mini split installation","thermostat installation","emergency AC repair"]},
-  roofing:{label:"Roofing",core:"roofing",
-    match:["roof","shingle","gutter","metal roof","flat roof"],
-    services:["roofing","roof repair","roof replacement","roof installation","shingle roofing","metal roofing","flat roof repair","gutter installation","storm damage roof repair","roof inspection","emergency roof repair"]},
-  electrician:{label:"Electrical",core:"electrical",
-    match:["electric","wiring","panel","lighting install","ev charger","circuit"],
-    services:["electrical services","electrical repair","panel upgrades","wiring installation","lighting installation","EV charger installation","generator installation","outlet installation","ceiling fan installation","electrical inspection"]},
-  dentist:{label:"Dental",core:"dental care",
-    match:["dent","orthodon","invisalign","teeth","veneers","implant","ortho"],
-    services:["dentist","family dentistry","cosmetic dentistry","teeth whitening","dental implants","invisalign","emergency dentist","teeth cleaning","root canal","dental crowns","pediatric dentistry","veneers"]},
-  physicaltherapy:{label:"Physical Therapy",core:"physical therapy",
-    match:["physical therap","physio","rehab","sports therapy","pelvic","ortho rehab"],
-    services:["physical therapy","sports physical therapy","post-surgery rehab","back pain therapy","pelvic floor therapy","orthopedic physical therapy","dry needling","manual therapy","injury rehabilitation","balance therapy"]},
-  lawyer:{label:"Legal / Law Firm",core:"legal services",
-    match:["law","attorney","lawyer","legal","injury claim","divorce","dui","estate plan"],
-    services:["personal injury lawyer","car accident attorney","divorce lawyer","family law attorney","criminal defense lawyer","estate planning attorney","DUI lawyer","wrongful death attorney","workers comp lawyer","business attorney"]},
-  realestate:{label:"Real Estate",core:"real estate",
-    match:["real estate","realtor","homes for sale","property","mortgage broker","realty"],
-    services:["real estate agent","realtor","homes for sale","sell my house","first time home buyer","luxury homes","condos for sale","property listings","real estate broker","home valuation"]},
-  restaurant:{label:"Restaurant / Food",core:"restaurant",
-    match:["restaurant","cafe","pizza","sushi","bbq","bakery","catering","bistro","diner","food"],
-    services:["restaurant","best restaurants","pizza delivery","catering","brunch","fine dining","takeout","family restaurant","date night restaurant","happy hour"]},
-  salon:{label:"Salon / Beauty",core:"salon",
-    match:["salon","hair","barber","nail","spa","beauty","lash","brow","esthetician","med spa"],
-    services:["hair salon","barbershop","nail salon","day spa","balayage","haircut","hair color","lash extensions","facials","waxing","mens haircut","blowout"]},
-  autorepair:{label:"Auto Repair",core:"auto repair",
-    match:["auto","mechanic","car repair","tire","brake","transmission","oil change","collision","detailing"],
-    services:["auto repair","oil change","brake repair","tire shop","transmission repair","engine repair","car AC repair","collision repair","auto detailing","wheel alignment","check engine light","mobile mechanic"]},
-  cleaning:{label:"Cleaning Services",core:"cleaning",
-    match:["clean","maid","janitor","house clean","carpet clean","window clean","power wash","pressure wash"],
-    services:["house cleaning","maid service","deep cleaning","move out cleaning","commercial cleaning","carpet cleaning","window cleaning","pressure washing","office cleaning","post construction cleaning","recurring house cleaning"]},
-  pestcontrol:{label:"Pest Control",core:"pest control",
-    match:["pest","exterminat","termite","rodent","mosquito","bed bug","wildlife removal"],
-    services:["pest control","exterminator","termite treatment","bed bug treatment","mosquito control","rodent removal","ant control","wildlife removal","cockroach treatment","wasp removal"]},
-  contractor:{label:"General Contractor / Remodeling",core:"remodeling",
-    match:["contractor","remodel","renovation","kitchen remodel","bathroom remodel","construction","builder","handyman","drywall","flooring"],
-    services:["home remodeling","kitchen remodeling","bathroom remodeling","general contractor","home additions","basement finishing","flooring installation","drywall repair","handyman services","deck building","custom home builder"]},
-  painting:{label:"Painting",core:"painting",
-    match:["paint","interior paint","exterior paint","cabinet refinish"],
-    services:["painting services","interior painting","exterior painting","cabinet painting","commercial painting","house painters","fence staining","deck staining","drywall and painting","popcorn ceiling removal"]},
-  garagedoor:{label:"Garage Doors",core:"garage door",
-    match:["garage door","garage spring","door opener"],
-    services:["garage door repair","garage door installation","garage door spring repair","garage door opener installation","emergency garage door repair","commercial garage doors"]},
-  fitness:{label:"Fitness / Gym",core:"fitness",
-    match:["gym","fitness","crossfit","yoga","pilates","personal train","martial arts","boxing"],
-    services:["gym","personal training","group fitness classes","yoga studio","crossfit","pilates","strength training","boot camp","martial arts","weight loss program"]},
-  chiropractor:{label:"Chiropractic",core:"chiropractic care",
-    match:["chiro","spinal","adjustment","spine"],
-    services:["chiropractor","back pain treatment","neck pain relief","spinal adjustment","sciatica treatment","auto accident chiropractor","sports chiropractor","prenatal chiropractic","posture correction"]},
-  vet:{label:"Veterinary",core:"veterinary care",
-    match:["vet","veterinar","animal hospital","pet clinic"],
-    services:["veterinarian","animal hospital","pet vaccinations","spay and neuter","emergency vet","pet dental care","dog grooming","puppy wellness","cat veterinarian"]},
-  photography:{label:"Photography",core:"photography",
-    match:["photograph","photo","wedding photo","headshot","portrait"],
-    services:["photographer","wedding photography","family portraits","newborn photography","headshots","real estate photography","event photography","engagement photos","branding photography","maternity photos"]},
+/* ===================== industry knowledge base ===================== */
+const INDUSTRIES={
+  landscaping:{label:"Landscaping & Lawn Care",core:"landscaping",match:["landscap","lawn","garden","yard","turf","hardscape","irrigation","patio","sod","mulch","nursery","outdoor living"],services:["landscaping","landscape design","lawn care","lawn mowing","lawn maintenance","hardscaping","patio installation","retaining walls","irrigation systems","sod installation","tree trimming","garden design","outdoor lighting","yard cleanup","mulch installation","artificial turf"]},
+  plumbing:{label:"Plumbing",core:"plumbing",match:["plumb","drain","sewer","water heater","pipe","leak","faucet","sump"],services:["plumbing","drain cleaning","water heater repair","water heater installation","leak detection","sewer line repair","pipe repair","faucet installation","sump pump repair","toilet repair","repiping","gas line installation"]},
+  hvac:{label:"HVAC / Heating & Cooling",core:"HVAC",match:["hvac","heating","cooling","air condition","furnace","ac repair","ductless","heat pump","ventilation"],services:["HVAC repair","air conditioning repair","AC installation","furnace repair","heating repair","heat pump installation","duct cleaning","HVAC maintenance","ductless mini split installation","thermostat installation","emergency AC repair"]},
+  roofing:{label:"Roofing",core:"roofing",match:["roof","shingle","gutter","metal roof","flat roof"],services:["roofing","roof repair","roof replacement","roof installation","shingle roofing","metal roofing","flat roof repair","gutter installation","storm damage roof repair","roof inspection","emergency roof repair"]},
+  electrician:{label:"Electrical",core:"electrical",match:["electric","wiring","panel","lighting install","ev charger","circuit"],services:["electrical services","electrical repair","panel upgrades","wiring installation","lighting installation","EV charger installation","generator installation","outlet installation","ceiling fan installation","electrical inspection"]},
+  dentist:{label:"Dental",core:"dental care",match:["dent","orthodon","invisalign","teeth","veneers","implant","ortho"],services:["dentist","family dentistry","cosmetic dentistry","teeth whitening","dental implants","invisalign","emergency dentist","teeth cleaning","root canal","dental crowns","pediatric dentistry","veneers"]},
+  physicaltherapy:{label:"Physical Therapy",core:"physical therapy",match:["physical therap","physio","rehab","sports therapy","pelvic","ortho rehab"],services:["physical therapy","sports physical therapy","post-surgery rehab","back pain therapy","pelvic floor therapy","orthopedic physical therapy","dry needling","manual therapy","injury rehabilitation","balance therapy"]},
+  lawyer:{label:"Legal / Law Firm",core:"legal services",match:["law","attorney","lawyer","legal","injury claim","divorce","dui","estate plan"],services:["personal injury lawyer","car accident attorney","divorce lawyer","family law attorney","criminal defense lawyer","estate planning attorney","DUI lawyer","wrongful death attorney","workers comp lawyer","business attorney"]},
+  realestate:{label:"Real Estate",core:"real estate",match:["real estate","realtor","homes for sale","property","mortgage broker","realty"],services:["real estate agent","realtor","homes for sale","sell my house","first time home buyer","luxury homes","condos for sale","property listings","real estate broker","home valuation"]},
+  restaurant:{label:"Restaurant / Food",core:"restaurant",match:["restaurant","cafe","pizza","sushi","bbq","bakery","catering","bistro","diner","food"],services:["restaurant","best restaurants","pizza delivery","catering","brunch","fine dining","takeout","family restaurant","date night restaurant","happy hour"]},
+  salon:{label:"Salon / Beauty",core:"salon",match:["salon","hair","barber","nail","spa","beauty","lash","brow","esthetician","med spa"],services:["hair salon","barbershop","nail salon","day spa","balayage","haircut","hair color","lash extensions","facials","waxing","mens haircut","blowout"]},
+  autorepair:{label:"Auto Repair",core:"auto repair",match:["auto","mechanic","car repair","tire","brake","transmission","oil change","collision","detailing"],services:["auto repair","oil change","brake repair","tire shop","transmission repair","engine repair","car AC repair","collision repair","auto detailing","wheel alignment","check engine light","mobile mechanic"]},
+  cleaning:{label:"Cleaning Services",core:"cleaning",match:["clean","maid","janitor","house clean","carpet clean","window clean","power wash","pressure wash"],services:["house cleaning","maid service","deep cleaning","move out cleaning","commercial cleaning","carpet cleaning","window cleaning","pressure washing","office cleaning","post construction cleaning","recurring house cleaning"]},
+  pestcontrol:{label:"Pest Control",core:"pest control",match:["pest","exterminat","termite","rodent","mosquito","bed bug","wildlife removal"],services:["pest control","exterminator","termite treatment","bed bug treatment","mosquito control","rodent removal","ant control","wildlife removal","cockroach treatment","wasp removal"]},
+  contractor:{label:"General Contractor / Remodeling",core:"remodeling",match:["contractor","remodel","renovation","kitchen remodel","bathroom remodel","construction","builder","handyman","drywall","flooring"],services:["home remodeling","kitchen remodeling","bathroom remodeling","general contractor","home additions","basement finishing","flooring installation","drywall repair","handyman services","deck building","custom home builder"]},
+  painting:{label:"Painting",core:"painting",match:["paint","interior paint","exterior paint","cabinet refinish"],services:["painting services","interior painting","exterior painting","cabinet painting","commercial painting","house painters","fence staining","deck staining","drywall and painting","popcorn ceiling removal"]},
+  garagedoor:{label:"Garage Doors",core:"garage door",match:["garage door","garage spring","door opener"],services:["garage door repair","garage door installation","garage door spring repair","garage door opener installation","emergency garage door repair","commercial garage doors"]},
+  fitness:{label:"Fitness / Gym",core:"fitness",match:["gym","fitness","crossfit","yoga","pilates","personal train","martial arts","boxing"],services:["gym","personal training","group fitness classes","yoga studio","crossfit","pilates","strength training","boot camp","martial arts","weight loss program"]},
+  chiropractor:{label:"Chiropractic",core:"chiropractic care",match:["chiro","spinal","adjustment","spine"],services:["chiropractor","back pain treatment","neck pain relief","spinal adjustment","sciatica treatment","auto accident chiropractor","sports chiropractor","prenatal chiropractic","posture correction"]},
+  vet:{label:"Veterinary",core:"veterinary care",match:["vet","veterinar","animal hospital","pet clinic"],services:["veterinarian","animal hospital","pet vaccinations","spay and neuter","emergency vet","pet dental care","dog grooming","puppy wellness","cat veterinarian"]},
+  photography:{label:"Photography",core:"photography",match:["photograph","photo","wedding photo","headshot","portrait"],services:["photographer","wedding photography","family portraits","newborn photography","headshots","real estate photography","event photography","engagement photos","branding photography","maternity photos"]},
 };
+const GENERIC={label:"Local Service Business",core:"services",match:[],services:["services","installation","repair","maintenance","consultation","emergency service"]};
 
-const GENERIC = {label:"Local Service Business",core:"services",match:[],
-  services:["services","installation","repair","maintenance","consultation","emergency service"]};
-
-/* ---- 2. parsing & detection ----------------------------------------- */
+/* ===================== parsing & detection ===================== */
 function parseInput(raw){
-  let txt=(raw||"").trim().toLowerCase();
-  let brand="";
-  // URL / domain handling
+  let txt=(raw||"").trim().toLowerCase();let brand="";
   const urlish=txt.match(/(?:https?:\/\/)?(?:www\.)?([a-z0-9-]+)\.[a-z.]{2,}/i);
-  if(urlish && (txt.includes(".")||txt.includes("/"))){
-    brand=urlish[1].replace(/-/g," ");
-    txt=brand+" "+txt; // let domain words feed detection
-  }
-  // explicit multi-term entry (commas / slashes)
+  if(urlish && (txt.includes(".")||txt.includes("/"))){brand=urlish[1].replace(/-/g," ");txt=brand+" "+txt;}
   const seeds=raw.split(/[,;/]| and /i).map(s=>s.trim()).filter(s=>s && s.length<40 && !/\.[a-z]{2,}/i.test(s));
-  return {txt, brand:titleCase(brand), seeds};
+  return {txt,brand:titleCase(brand),seeds};
 }
-function detectIndustry(txt){
-  let best=null,bestScore=0;
-  for(const key in INDUSTRIES){
-    const ind=INDUSTRIES[key];
-    let score=0;
-    for(const m of ind.match){ if(txt.includes(m)) score+=m.length; }
-    if(score>bestScore){bestScore=score;best=ind;}
-  }
-  return best||GENERIC;
-}
+function detectIndustry(txt){let best=null,bs=0;for(const k in INDUSTRIES){const ind=INDUSTRIES[k];let s=0;for(const m of ind.match){if(txt.includes(m))s+=m.length;}if(s>bs){bs=s;best=ind;}}return best||GENERIC;}
 function titleCase(s){return (s||"").replace(/\b\w/g,c=>c.toUpperCase());}
-function uniq(arr){return [...new Set(arr.map(x=>x.trim().toLowerCase().replace(/\s+/g," ")))].filter(Boolean);}
+function uniq(a){return [...new Set(a.map(x=>x.trim().toLowerCase().replace(/\s+/g," ")))].filter(Boolean);}
+function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function escapeReg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}
+const YEAR=new Date().getFullYear();
 
-/* ---- 3. keyword generation ------------------------------------------ */
+/* ===================== keyword generation ===================== */
 function buildKeywords(state){
-  const {industry,city,region,services,core,brand}=state;
-  const CITY = city || "[city]";
-  const REG  = region || "";
-  const places = uniq([CITY, REG?CITY+", "+REG:""].filter(Boolean));
-  const place = places[0];
-
-  const local=[], info=[], commercial=[], transactional=[], branded=[];
-
-  // ---- LOCAL (geo intent) ----
-  const localTpls = s=>[
-    `${s} near me`,
-    `${s} in ${place}`,
-    `${s} ${city||"[city]"}`,
-    `best ${s} near me`,
-    `best ${s} in ${city||"[city]"}`,
-    `${s} company near me`,
-    `${s} companies in ${city||"[city]"}`,
-    `local ${s} company`,
-    `affordable ${s} near me`,
-    `top rated ${s} ${city||"[city]"}`,
-    `${s} services near me`,
-    `${s} near ${city||"[city]"}`,
-  ];
+  const {city,core,services,brand}=state;const C=city||"[city]";
+  const local=[],info=[],commercial=[],transactional=[],branded=[];
+  const localTpls=s=>[`${s} near me`,`${s} in ${C}`,`${s} ${C}`,`best ${s} near me`,`best ${s} in ${C}`,`${s} company near me`,`${s} companies in ${C}`,`local ${s} company`,`affordable ${s} near me`,`top rated ${s} ${C}`,`${s} services near me`,`${s} near ${C}`];
   services.slice(0,6).forEach(s=>localTpls(s).forEach(k=>local.push(k)));
-  // core-level catch-alls
   local.push(`${core} near me`,`${core} companies near me`,`${core} near me open now`,`emergency ${core} near me`);
+  services.forEach(s=>{info.push(`how much does ${s} cost`,`${s} cost in ${C}`,`average cost of ${s}`,`how to choose a ${s} company`,`what to look for in a ${s} company`,`${s} tips`,`${s} ideas`,`benefits of professional ${s}`,`how long does ${s} take`,`is ${s} worth it`,`${s} vs doing it yourself`,`how often should you get ${s}`);});
+  info.push(`${core} cost guide ${YEAR}`,`questions to ask a ${core} company`,`signs you need ${core}`);
+  services.forEach(s=>{commercial.push(`best ${s} companies in ${C}`,`top ${s} near me`,`${s} reviews`,`${s} prices ${C}`,`cheap ${s} near me`,`${s} cost estimate`,`compare ${s} companies`,`${s} near me reviews`);});
+  commercial.push(`best ${core} company near me`,`${core} quotes ${C}`,`affordable ${core} ${C}`);
+  services.forEach(s=>{transactional.push(`hire ${s} ${C}`,`${s} free quote`,`${s} estimate near me`,`book ${s} online`,`schedule ${s} ${C}`,`${s} same day service`,`emergency ${s} near me`);});
+  transactional.push(`${core} free estimate near me`,`get a ${core} quote ${C}`,`${core} financing near me`);
+  const b=brand&&brand.length>1?brand:"[your brand]";
+  branded.push(`${b}`,`${b} reviews`,`${b} ${C}`,`${b} near me`,`${b} phone number`,`${b} hours`,`${b} ${core}`,`is ${b} legit`,`${b} prices`,`${b} vs competitors`);
+  return {local:uniq(local),info:uniq(info),commercial:uniq(commercial),transactional:uniq(transactional),branded:uniq(branded)};
+}
 
-  // ---- INFORMATIONAL (blog / how-to / cost) ----
-  services.forEach(s=>{
-    info.push(
-      `how much does ${s} cost`,
-      `${s} cost in ${city||"[city]"}`,
-      `average cost of ${s}`,
-      `how to choose a ${s} company`,
-      `what to look for in a ${s} company`,
-      `${s} tips`,
-      `${s} ideas`,
-      `benefits of professional ${s}`,
-      `how long does ${s} take`,
-      `is ${s} worth it`,
-      `${s} vs doing it yourself`,
-      `how often should you get ${s}`,
-    );
-  });
-  info.push(`${core} cost guide ${new Date().getFullYear()}`,`questions to ask a ${core} company`,`signs you need ${core}`);
+/* ===================== scoring (cloud size + topic priority) ===================== */
+function scoreKeyword(k){let s=10;const w=k.split(" ").length;s+=Math.max(0,6-w);
+  if(/near me/.test(k))s+=6;if(/\bbest\b|\btop\b/.test(k))s+=4;if(/cost|price|how much/.test(k))s+=5;
+  if(/\[city\]|\bin /.test(k))s+=3;if(/emergency|same day|free quote|hire|book/.test(k))s+=4;
+  if(/how to|what|guide|tips|ideas|signs|worth/.test(k))s+=3;return s;}
 
-  // ---- COMMERCIAL (consideration / comparison) ----
-  services.forEach(s=>{
-    commercial.push(
-      `best ${s} companies in ${city||"[city]"}`,
-      `top ${s} near me`,
-      `${s} reviews`,
-      `${s} prices ${city||"[city]"}`,
-      `cheap ${s} near me`,
-      `${s} cost estimate`,
-      `compare ${s} companies`,
-      `${s} near me reviews`,
-    );
-  });
-  commercial.push(`best ${core} company near me`,`${core} quotes ${city||"[city]"}`,`affordable ${core} ${city||"[city]"}`);
-
-  // ---- TRANSACTIONAL (ready to act) ----
-  services.forEach(s=>{
-    transactional.push(
-      `hire ${s} ${city||"[city]"}`,
-      `${s} free quote`,
-      `${s} estimate near me`,
-      `book ${s} online`,
-      `schedule ${s} ${city||"[city]"}`,
-      `${s} same day service`,
-      `emergency ${s} near me`,
-    );
-  });
-  transactional.push(`${core} free estimate near me`,`get a ${core} quote ${city||"[city]"}`,`${core} financing near me`);
-
-  // ---- BRANDED ----
-  const b = brand && brand.length>1 ? brand : "[your brand]";
-  branded.push(
-    `${b}`,
-    `${b} reviews`,
-    `${b} ${city||"[city]"}`,
-    `${b} near me`,
-    `${b} phone number`,
-    `${b} hours`,
-    `${b} ${core}`,
-    `is ${b} legit`,
-    `${b} prices`,
-    `${b} vs competitors`,
-  );
-
-  return {
-    local:uniq(local), info:uniq(info), commercial:uniq(commercial),
-    transactional:uniq(transactional), branded:uniq(branded)
+/* ===================== topic generation ===================== */
+function topicType(k){
+  if(/how much|cost|price|average|\bprices\b/.test(k))return "cost";
+  if(/how to|how do|how long|how often/.test(k))return "howto";
+  if(/best|top|reviews|\bvs\b|compare/.test(k))return "best";
+  if(/ideas/.test(k))return "ideas";
+  if(/tips/.test(k))return "tips";
+  if(/emergency|same day/.test(k))return "emergency";
+  if(/signs|worth|benefits|what is|what to|questions/.test(k))return "guide";
+  return "guide";
+}
+const STOP=["near me","best","top","affordable","cheap","local","how much does","how much","cost of","average cost of","how to choose a","how to","how long does","how often should you get","what to look for in a","what is","benefits of professional","is","worth it","reviews","prices","price","ideas","tips","company","companies","services","service","emergency","same day","free quote","estimate","book","online","schedule","hire","get a","quote","compare","vs doing it yourself","vs","near","in"];
+function cleanSubject(k,city){
+  let s=" "+k.toLowerCase()+" ";
+  s=s.replace(/\[city\]/g," ");
+  if(city)s=s.replace(new RegExp("\\b"+escapeReg(city.toLowerCase())+"\\b","g")," ");
+  STOP.forEach(w=>{s=s.replace(new RegExp("\\b"+escapeReg(w)+"\\b","g")," ");});
+  s=s.replace(/\s+/g," ").trim();
+  return s;
+}
+function subjectOf(k,state){
+  const lk=k.toLowerCase();
+  // prefer a known service contained in the keyword
+  let found=state.services.filter(s=>lk.includes(s.toLowerCase())).sort((a,b)=>b.length-a.length)[0];
+  let subj=found||cleanSubject(k,state.city)||state.core;
+  return subj;
+}
+function rnd(min,max){return Math.floor(min+Math.random()*(max-min+1));}
+function makeTopic(subjectRaw,type,state){
+  const S=titleCase(subjectRaw);const C=state.city||"[city]";
+  const T={
+    cost:[`How Much Does ${S} Cost in ${C}? (${YEAR} Price Guide)`,`${S} Cost in ${C}: What to Budget in ${YEAR}`,`The Real Cost of ${S} in ${C} (Prices, Factors & Tips)`],
+    howto:[`How to Choose the Right ${S} Company in ${C}`,`How ${S} Works: A ${C} Homeowner's Guide`,`How to Prepare for ${S} in ${C}`],
+    best:[`The ${rnd(5,9)} Best ${S} Companies in ${C} (${YEAR})`,`How to Find the Best ${S} Near You in ${C}`,`${S} in ${C}: How to Compare Quotes & Pick a Pro`],
+    ideas:[`${rnd(15,27)} ${S} Ideas to Transform Your Home in ${C}`,`${rnd(9,15)} ${S} Ideas Trending in ${C} This Year`,`${S} Inspiration: ${rnd(11,19)} Ideas for ${C} Homes`],
+    tips:[`${rnd(7,11)} ${S} Tips Every ${C} Homeowner Should Know`,`${rnd(5,9)} Pro ${S} Tips to Save Time & Money`,`${S} Done Right: ${rnd(6,9)} Tips From the Pros`],
+    emergency:[`What to Do in a ${S} Emergency in ${C}`,`Emergency ${S}: A ${C} Homeowner's Action Plan`,`When You Need Emergency ${S} in ${C} (And Who to Call)`],
+    guide:[`The Complete Guide to ${S} in ${C} (${YEAR})`,`${rnd(5,8)} Signs You Need ${S} (Don't Ignore #${rnd(2,5)})`,`Is Professional ${S} Worth It? A ${C} Guide`,`Everything ${C} Homeowners Should Know About ${S}`],
   };
+  const arr=T[type]||T.guide;return arr[Math.floor(Math.random()*arr.length)];
+}
+function topicFromKeyword(k,state){const subj=subjectOf(k,state);const type=topicType(k);return {title:makeTopic(subj,type,state),source:k,type,subject:subj};}
+function buildTopics(kw,state){
+  const seen=new Set();const out=[];
+  const add=(k)=>{const t=topicFromKeyword(k,state);const key=t.title.toLowerCase();if(!seen.has(key)){seen.add(key);out.push(t);}};
+  // strongest traffic sources: services across varied types
+  const services=state.services.slice(0,8);
+  services.forEach((s,i)=>{
+    const types=["cost","guide","tips","ideas","howto","best"];
+    add(`${s} cost in ${state.city||"[city]"}`);            // cost
+    add(`${["signs you need","how to choose a","best","tips for","ideas for"][i%5]} ${s}`);
+  });
+  // sprinkle a few from info/commercial
+  kw.info.slice(0,6).forEach(add);
+  kw.commercial.slice(0,3).forEach(add);
+  return out.sort((a,b)=>scoreKeyword(b.source)-scoreKeyword(a.source)).slice(0,14);
 }
 
-/* ---- 4. page-map grouping ------------------------------------------- */
-function buildPageMap(kw, state){
-  const city=state.city||"[city]";
-  return [
-    {ico:"🏠",bg:"linear-gradient(135deg,#19e3c4,#7c5cff)",title:"Homepage",
-     desc:"Your strongest local terms — the searches you most want to rank for.",
-     items:kw.local.slice(0,8)},
-    {ico:"📌",bg:"linear-gradient(135deg,#7c5cff,#ff5c8a)",title:"Service-Area Pages",
-     desc:`One page per city/neighborhood you serve (e.g. swap "${city}" for nearby towns).`,
-     items:kw.local.filter(k=>k.includes(city)||k.includes("[city]")||k.includes("in ")).slice(0,8)},
-    {ico:"🧰",bg:"linear-gradient(135deg,#ff5c8a,#ffd166)",title:"Service Pages",
-     desc:"One page per service, optimized for ready-to-buy searches.",
-     items:[...kw.transactional.slice(0,5),...kw.commercial.slice(0,3)]},
-    {ico:"✍️",bg:"linear-gradient(135deg,#ffd166,#19e3c4)",title:"Blog & How-To Guides",
-     desc:"Informational posts that build authority and capture early-stage searchers.",
-     items:kw.info.filter(k=>/how|what|tips|ideas|worth|vs|signs|questions/.test(k)).slice(0,8)},
-    {ico:"💲",bg:"linear-gradient(135deg,#19e3c4,#ffd166)",title:"Cost & Pricing Articles",
-     desc:'"How much does X cost" articles rank fast and pull in high-intent readers.',
-     items:[...kw.info.filter(k=>/cost|price|average/.test(k)),...kw.commercial.filter(k=>/price|cost|cheap|quote/.test(k))].slice(0,8)},
-    {ico:"🏷️",bg:"linear-gradient(135deg,#7be0ff,#9b8bff)",title:"Brand / Reputation",
-     desc:"Own every result when someone searches your business by name.",
-     items:kw.branded.slice(0,8)},
-  ];
+/* ===================== page map ===================== */
+function buildPageMap(kw,state){const city=state.city||"[city]";return [
+  {ico:"🏠",bg:"linear-gradient(135deg,#19e3c4,#7c5cff)",title:"Homepage",desc:"Your strongest local terms — the searches you most want to rank for.",items:kw.local.slice(0,8)},
+  {ico:"📌",bg:"linear-gradient(135deg,#7c5cff,#ff5c8a)",title:"Service-Area Pages",desc:`One page per city/neighborhood you serve (swap "${city}" for nearby towns).`,items:kw.local.filter(k=>k.includes(city)||k.includes("[city]")||k.includes("in ")).slice(0,8)},
+  {ico:"🧰",bg:"linear-gradient(135deg,#ff5c8a,#ffd166)",title:"Service Pages",desc:"One page per service, optimized for ready-to-buy searches.",items:[...kw.transactional.slice(0,5),...kw.commercial.slice(0,3)]},
+  {ico:"✍️",bg:"linear-gradient(135deg,#ffd166,#19e3c4)",title:"Blog & How-To Guides",desc:"Informational posts that build authority and capture early-stage searchers.",items:kw.info.filter(k=>/how|what|tips|ideas|worth|vs|signs|questions/.test(k)).slice(0,8)},
+  {ico:"💲",bg:"linear-gradient(135deg,#19e3c4,#ffd166)",title:"Cost & Pricing Articles",desc:'"How much does X cost" articles rank fast and pull in high-intent readers.',items:[...kw.info.filter(k=>/cost|price|average/.test(k)),...kw.commercial.filter(k=>/price|cost|cheap|quote/.test(k))].slice(0,8)},
+  {ico:"🏷️",bg:"linear-gradient(135deg,#7be0ff,#9b8bff)",title:"Brand / Reputation",desc:"Own every result when someone searches your business by name.",items:kw.branded.slice(0,8)},
+];}
+
+/* ===================== content brief ===================== */
+function briefFormat(type){return {cost:{f:"Cost / Price Guide",wc:"1,400–1,800"},howto:{f:"How-To Guide",wc:"1,200–1,600"},best:{f:"Listicle / Comparison",wc:"1,600–2,200"},ideas:{f:"Listicle (Inspiration)",wc:"1,500–2,000"},tips:{f:"Tips Listicle",wc:"1,100–1,500"},emergency:{f:"Service Guide",wc:"900–1,300"},guide:{f:"Pillar Guide",wc:"1,500–2,200"}}[type]||{f:"Guide",wc:"1,200–1,600"};
+}
+function outlineFor(type,S,C){
+  const O={
+    cost:[`Quick answer: average ${S} cost in ${C} (target the featured snippet)`,`What's included in ${S}`,`${S} cost breakdown by project type/size — add a price table`,`Factors that affect ${S} cost in ${C}`,`${S}: hiring a pro vs. DIY`,`How to save money (and financing options)`,`Is ${S} worth the cost? — share your firsthand result`],
+    howto:[`What you need to know before ${S}`,`Step-by-step: how ${S} works`,`Common ${S} mistakes to avoid (from experience)`,`When to call a pro in ${C}`,`What ${S} costs in ${C} — link to your cost article`],
+    best:[`How to evaluate a ${S} company`,`What separates the best ${S} providers in ${C}`,`Red flags & questions to ask before you hire`,`How to compare quotes the right way`,`Why local matters for ${S} in ${C}`],
+    ideas:[`How to pick the right ${S} idea for your home`,`The ${S} ideas (each idea = its own H2 with a photo)`,`Trending ${S} styles in ${C}`,`What these ${S} projects cost in ${C} — link to cost article`],
+    tips:[`Why these ${S} tips matter`,`The tips (one H2 each, lead with the highest-impact)`,`Mistakes these tips help you avoid`,`When to bring in a ${C} pro`],
+    emergency:[`First steps to take right now`,`How to minimize damage before help arrives`,`What an emergency ${S} call in ${C} involves`,`How to prevent this from happening again`],
+    guide:[`What ${S} is and who needs it`,`Signs you need ${S}`,`What to expect, step by step`,`How to choose a trustworthy ${S} company in ${C}`,`${S} cost in ${C} — link to your cost article`,`Maintenance / next steps`],
+  };
+  return O[type]||O.guide;
+}
+function buildBrief(topic,state,eeat){
+  const S=titleCase(topic.subject);const C=state.city||"[city]";const fmt=briefFormat(topic.type);
+  const slug=topic.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,70);
+  const meta=`${topic.title.replace(/\s*\(.*?\)\s*$/,"")}. Get expert ${S.toLowerCase()} insight for ${C}${state.brand?` from ${state.brand}`:""}. Real advice, costs & a free quote.`.slice(0,158);
+  const secondary=uniq([...(CURRENT.info||[]),...(CURRENT.commercial||[]),...(CURRENT.local||[])].filter(k=>k.includes((topic.subject||"").toLowerCase().split(" ")[0]))).slice(0,6);
+  const faqs=uniq([`How much does ${S.toLowerCase()} cost in ${C}?`,`How long does ${S.toLowerCase()} take?`,`Is professional ${S.toLowerCase()} worth it?`,`How do I choose a ${S.toLowerCase()} company near me?`,`How often should I get ${S.toLowerCase()}?`]).slice(0,4);
+  const outline=outlineFor(topic.type,S,C);
+  const exp=(eeat.experience||"").trim();const cred=(eeat.credentials||"").trim();
+  const internal=uniq([...(CURRENT.transactional||[]).slice(0,2),...(CURRENT.local||[]).slice(0,2)]);
+
+  // HTML
+  let h=`<h1 class="bt">${escapeHtml(topic.title)}</h1>
+  <div class="briefmeta">
+    <span class="bm">Format: <b>${fmt.f}</b></span>
+    <span class="bm">Word count: <b>${fmt.wc}</b></span>
+    <span class="bm">Primary kw: <b>${escapeHtml(topic.source)}</b></span>
+    <span class="bm">Location: <b>${escapeHtml(C)}</b></span>
+  </div>
+  <section><h3>On-page SEO</h3>
+    <p class="g"><b>SEO title:</b> ${escapeHtml(topic.title)}</p>
+    <p class="g"><b>Meta description:</b> ${escapeHtml(meta)}</p>
+    <p class="g"><b>URL slug:</b> <span class="codeword">/blog/${escapeHtml(slug)}/</span></p>
+    <p class="g"><b>Secondary keywords:</b> ${secondary.length?secondary.map(escapeHtml).join(" · "):"add 4–6 related terms from your keyword tabs"}</p>
+  </section>
+  <section><h3>Suggested outline</h3><ol>${outline.map(o=>`<li>${escapeHtml(o)}</li>`).join("")}<li>FAQ (mark up with FAQ schema)</li><li>Author / credibility box + CTA</li></ol></section>`;
+
+  h+=`<section class="eeatbox"><h3>EEAT signals to weave in</h3>`;
+  if(exp){h+=`<p class="g"><b>Experience (use in the intro & a "from our experience" callout):</b><br>${escapeHtml(exp)}</p>`;}
+  else{h+=`<p class="g small">Add a real story or result in the intro — Google's "Experience" signal. (You skipped this; click "Edit expertise" to add it.)</p>`;}
+  if(cred){h+=`<p class="g"><b>Expertise · Authority · Trust (author box + "Why trust us" section):</b><br>${escapeHtml(cred)}</p>`;}
+  else{h+=`<p class="g small">Add credentials, years in business, licenses & guarantees for the author box.</p>`;}
+  h+=`</section>`;
+
+  h+=`<section><h3>FAQ (FAQ schema)</h3><ul>${faqs.map(f=>`<li>${escapeHtml(f)}</li>`).join("")}</ul></section>`;
+  h+=`<section><h3>Internal links &amp; CTA</h3><ul>${internal.map(k=>`<li>Link "${escapeHtml(S.toLowerCase())}" anchors to your service page targeting <b>${escapeHtml(k)}</b></li>`).join("")||"<li>Link to your matching service page.</li>"}<li>End with a CTA: <b>Get a free ${escapeHtml(S.toLowerCase())} quote in ${escapeHtml(C)}</b>.</li></ul></section>`;
+  h+=`<section><h3>EEAT publishing checklist</h3><ul class="ck"><li>Real author byline with photo &amp; bio${cred?" (use credentials above)":""}</li><li>Original photos of your own work (not stock)</li><li>Cite data sources / studies where you state facts</li><li>Show reviews, ratings, license # &amp; guarantees</li><li>Add &amp; date "last updated", refresh yearly</li><li>Add FAQ + Article schema markup</li></ul></section>`;
+
+  // Markdown
+  let md=`# ${topic.title}\n\n`;
+  md+=`**Format:** ${fmt.f}  |  **Word count:** ${fmt.wc}  |  **Primary keyword:** ${topic.source}  |  **Location:** ${C}\n\n`;
+  md+=`## On-page SEO\n- **SEO title:** ${topic.title}\n- **Meta description:** ${meta}\n- **URL slug:** /blog/${slug}/\n- **Secondary keywords:** ${secondary.join(", ")||"(add 4–6 related terms)"}\n\n`;
+  md+=`## Suggested outline\n${outline.map((o,i)=>`${i+1}. ${o}`).join("\n")}\n${outline.length+1}. FAQ (FAQ schema)\n${outline.length+2}. Author / credibility box + CTA\n\n`;
+  md+=`## EEAT signals\n- **Experience:** ${exp||"(add a real story/result)"}\n- **Expertise / Authority / Trust:** ${cred||"(add credentials, years, licenses, guarantees)"}\n\n`;
+  md+=`## FAQ (FAQ schema)\n${faqs.map(f=>`- ${f}`).join("\n")}\n\n`;
+  md+=`## Internal links & CTA\n${internal.map(k=>`- Link to service page targeting "${k}"`).join("\n")||"- Link to your matching service page"}\n- CTA: Get a free ${S.toLowerCase()} quote in ${C}\n\n`;
+  md+=`## EEAT publishing checklist\n- Real author byline with photo & bio\n- Original photos of your own work\n- Cite sources for any facts/stats\n- Show reviews, license #, guarantees\n- Add "last updated" date, refresh yearly\n- Add FAQ + Article schema\n`;
+  return {html:h,md};
 }
 
-/* ---- 5. state & render ---------------------------------------------- */
+/* ===================== state & render ===================== */
 const ACCENT={local:"var(--c2)",info:"var(--c4)",commercial:"var(--c1)",transactional:"var(--c3)",branded:"#7be0ff"};
+const CLOUDCOL={local:"#19e3c4",info:"#ffd166",commercial:"#9b8bff",transactional:"#ff7ba3",branded:"#7be0ff"};
+const TYPECOL={cost:"#19e3c4",howto:"#7be0ff",best:"#9b8bff",ideas:"#ff7ba3",tips:"#ffd166",emergency:"#ff5c8a",guide:"#c7bcff"};
 const LABELS={local:"local",info:"info",commercial:"buy-research",transactional:"buy",branded:"brand"};
-let STATE={city:"",region:""};
-let CURRENT={};
+let STATE={city:"",region:""},CURRENT={},EEAT=loadEEAT(),viewMode="chips",pendingTopic=null;
+
+const $=id=>document.getElementById(id);
+const q=$("q"),sbox=$("sbox"),results=$("results"),pmGrid=$("pmGrid"),topicsGrid=$("topicsGrid"),
+  sIndustry=$("sIndustry"),sLoc=$("sLoc"),sCount=$("sCount"),locEl=$("loc"),locHint=$("locHint");
 
 function run(){
-  const raw=q.value.trim();
-  if(!raw){ shake(sbox); q.focus(); return; }
-  const {txt,brand,seeds}=parseInput(raw);
-  const industry=detectIndustry(txt);
-  // build service list: industry services, enriched with user seeds that look like services
+  const raw=q.value.trim();if(!raw){shake(sbox);q.focus();return;}
+  const {txt,brand,seeds}=parseInput(raw);const industry=detectIndustry(txt);
   let services=[...industry.services];
-  const seedServices=seeds.filter(s=>s && s!==raw.toLowerCase() && s.length>2 && industry.match.every(m=>s!==m));
-  if(industry===GENERIC && seeds.length){ services=seeds.length>1?seeds:[raw.toLowerCase()]; }
-  else if(seedServices.length){ services=uniq([...seedServices,...services]); }
+  const seedServices=seeds.filter(s=>s&&s!==raw.toLowerCase()&&s.length>2&&industry.match.every(m=>s!==m));
+  if(industry===GENERIC&&seeds.length){services=seeds.length>1?seeds:[raw.toLowerCase()];}
+  else if(seedServices.length){services=uniq([...seedServices,...services]);}
   services=uniq(services);
-
   const loc=parseLoc(locEl.value);
-  STATE={industry,city:loc.city,region:loc.region,services,core:industry.core,
-    brand: brand || (industry===GENERIC?"":"")};
+  STATE={industry,city:loc.city,region:loc.region,services,core:industry.core,brand};
+  const kw=buildKeywords(STATE);CURRENT=kw;
+  CURRENT.pagemap=buildPageMap(kw,STATE);CURRENT.topics=buildTopics(kw,STATE);
 
-  const kw=buildKeywords(STATE);
-  CURRENT=kw;
-  CURRENT.pagemap=buildPageMap(kw,STATE);
-
-  // summary
   sIndustry.textContent=industry.label;
   sLoc.textContent=loc.city?(loc.region?`${loc.city}, ${loc.region}`:loc.city):"add your city ↑";
   const total=kw.local.length+kw.info.length+kw.commercial.length+kw.transactional.length+kw.branded.length;
   sCount.textContent=total;
-  nLocal.textContent=kw.local.length;nInfo.textContent=kw.info.length;
-  nCommercial.textContent=kw.commercial.length;nTransactional.textContent=kw.transactional.length;
-  nBranded.textContent=kw.branded.length;
+  $("nLocal").textContent=kw.local.length;$("nInfo").textContent=kw.info.length;$("nCommercial").textContent=kw.commercial.length;
+  $("nTransactional").textContent=kw.transactional.length;$("nBranded").textContent=kw.branded.length;$("nTopics").textContent=CURRENT.topics.length;
 
-  renderPanel("local");renderPanel("info");renderPanel("commercial");
-  renderPanel("transactional");renderPanel("branded");renderPageMap();
-
-  results.classList.add("show");
-  selectTab("local");
-  results.scrollIntoView({behavior:"smooth",block:"start"});
-  confetti();
-  vibrate(18);
+  ["local","info","commercial","transactional","branded"].forEach(renderPanel);
+  renderTopics();renderPageMap();
+  results.classList.add("show");selectTab("local");
+  results.scrollIntoView({behavior:"smooth",block:"start"});confetti();vibrate(18);
 }
 
 function renderPanel(name){
-  const wrap=document.querySelector(`.panel[data-panel="${name}"] .chips`);
-  wrap.innerHTML="";
-  const list=CURRENT[name]||[];
-  if(!list.length){wrap.innerHTML='<div class="empty">No keywords here yet.</div>';return;}
-  list.forEach((k,i)=>wrap.appendChild(chipEl(k,name,i)));
+  const wrap=document.querySelector(`.panel[data-panel="${name}"] .view`);wrap.innerHTML="";
+  const list=CURRENT[name]||[];if(!list.length){wrap.innerHTML='<div class="empty">No keywords here yet.</div>';return;}
+  if(viewMode==="cloud"){wrap.className="view cloud";const max=Math.max(...list.map(scoreKeyword));
+    list.forEach((k,i)=>wrap.appendChild(cloudEl(k,name,i,max)));}
+  else{wrap.className="view chips";list.forEach((k,i)=>wrap.appendChild(chipEl(k,name,i)));}
 }
 function chipEl(text,accentName,i){
-  const c=document.createElement("button");
-  c.className="chip";c.type="button";
+  const c=document.createElement("button");c.className="chip";c.type="button";
   const acc=ACCENT[accentName]||"var(--c2)";
   c.innerHTML=`<span class="tag-i" style="background:${acc}22;color:${acc}">${LABELS[accentName]||""}</span>
     <span class="kw">${escapeHtml(text)}</span>
-    <svg class="cp" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>`;
-  c.addEventListener("click",e=>{copyText(text);c.classList.add("copied");setTimeout(()=>c.classList.remove("copied"),900);ripple(e,c);vibrate(8);});
-  setTimeout(()=>c.classList.add("in"), 18*i % 600 + Math.min(i,30)*14);
-  return c;
+    <span class="spark" title="Make a blog topic">✨</span>
+    <svg class="cp" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" title="Copy keyword"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>`;
+  c.addEventListener("click",e=>{addTopicFrom(text);ripple(e,c);vibrate(10);});
+  c.querySelector(".cp").addEventListener("click",e=>{e.stopPropagation();copyText(text);c.classList.add("copied");setTimeout(()=>c.classList.remove("copied"),900);vibrate(8);});
+  setTimeout(()=>c.classList.add("in"),Math.min(i,30)*16);return c;
+}
+function cloudEl(text,accentName,i,max){
+  const sc=scoreKeyword(text);const size=(0.82+(sc/max)*1.15).toFixed(2);
+  const col=CLOUDCOL[accentName]||"#19e3c4";
+  const w=document.createElement("span");w.className="cw";w.style.fontSize=size+"rem";w.style.color=col;
+  w.style.animationDelay=(i*16)+"ms";w.title="Click → blog topic · "+text;
+  w.innerHTML=`<span class="f" style="animation-delay:${(i%9)*0.4}s">${escapeHtml(text)}</span>`;
+  w.addEventListener("click",e=>{addTopicFrom(text);vibrate(10);});
+  return w;
+}
+function renderTopics(){
+  topicsGrid.innerHTML="";
+  if(!CURRENT.topics||!CURRENT.topics.length){topicsGrid.innerHTML='<div class="empty">No topics yet.</div>';return;}
+  CURRENT.topics.forEach((t,i)=>topicsGrid.appendChild(topicEl(t,i)));
+}
+function topicEl(t,i){
+  const el=document.createElement("div");el.className="topic";
+  const col=TYPECOL[t.type]||"#c7bcff";
+  el.innerHTML=`<div class="tt">${escapeHtml(t.title)}</div>
+    <div class="meta"><span class="badge" style="background:${col}22;color:${col}">${t.type}</span>
+      <span class="src">from: ${escapeHtml(t.source)}</span></div>
+    <div class="row">
+      <button class="btn-content" type="button">✍️ Generate content</button>
+      <button class="btn-mini" type="button" title="Copy title">⧉</button>
+    </div>`;
+  el.querySelector(".btn-content").addEventListener("click",e=>{openEEAT(t);ripple(e,e.currentTarget);vibrate(12);});
+  el.querySelector(".btn-mini").addEventListener("click",()=>{copyText(t.title);vibrate(8);});
+  setTimeout(()=>el.classList.add("in"),i*45);return el;
+}
+function addTopicFrom(keyword){
+  if(!CURRENT.topics)CURRENT.topics=[];
+  const t=topicFromKeyword(keyword,STATE);
+  if(CURRENT.topics.some(x=>x.title.toLowerCase()===t.title.toLowerCase())){toast("Topic already in your list");selectTab("topics");return;}
+  CURRENT.topics.unshift(t);$("nTopics").textContent=CURRENT.topics.length;renderTopics();
+  toast(`✨ Topic added: ${t.title}`);
+  const tb=document.querySelector('.tab[data-tab="topics"]');tb.classList.remove("pulse");void tb.offsetWidth;tb.classList.add("pulse");
 }
 function renderPageMap(){
   pmGrid.innerHTML="";
   CURRENT.pagemap.forEach((card,ci)=>{
     const el=document.createElement("div");el.className="pm-card";
-    el.innerHTML=`<h3><span class="ico" style="background:${card.bg}">${card.ico}</span>${card.title}</h3>
-      <p class="desc">${card.desc}</p><div class="chips"></div>`;
+    el.innerHTML=`<h3><span class="ico" style="background:${card.bg}">${card.ico}</span>${card.title}</h3><p class="desc">${card.desc}</p><div class="chips"></div>`;
     const chips=el.querySelector(".chips");
-    uniq(card.items).forEach((k,i)=>{
-      const c=document.createElement("button");c.className="chip";c.type="button";
-      c.innerHTML=`<span class="kw">${escapeHtml(k)}</span>`;
-      c.addEventListener("click",e=>{copyText(k);c.classList.add("copied");setTimeout(()=>c.classList.remove("copied"),900);ripple(e,c);vibrate(8);});
-      setTimeout(()=>c.classList.add("in"), ci*60 + i*22);
-      chips.appendChild(c);
-    });
+    uniq(card.items).forEach((k,i)=>{const c=document.createElement("button");c.className="chip";c.type="button";
+      c.innerHTML=`<span class="kw">${escapeHtml(k)}</span><span class="spark">✨</span>`;
+      c.addEventListener("click",e=>{addTopicFrom(k);ripple(e,c);vibrate(8);});
+      setTimeout(()=>c.classList.add("in"),ci*50+i*20);chips.appendChild(c);});
     pmGrid.appendChild(el);
   });
 }
 
-/* ---- 6. tabs -------------------------------------------------------- */
+/* ===================== tabs & view toggle ===================== */
 function selectTab(name){
   document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.tab===name));
   document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.dataset.panel===name));
+  const kwTab=["local","info","commercial","transactional","branded"].includes(name);
+  $("cloudToggle").style.display=kwTab?"":"none";
 }
-document.getElementById("tabs").addEventListener("click",e=>{
-  const t=e.target.closest(".tab");if(!t)return;selectTab(t.dataset.tab);vibrate(6);
-});
+$("tabs").addEventListener("click",e=>{const t=e.target.closest(".tab");if(!t)return;selectTab(t.dataset.tab);vibrate(6);});
+const cloudToggle=$("cloudToggle");
+function toggleCloud(){viewMode=viewMode==="cloud"?"chips":"cloud";
+  cloudToggle.classList.toggle("on",viewMode==="cloud");cloudToggle.setAttribute("aria-checked",viewMode==="cloud");
+  if(CURRENT.local)["local","info","commercial","transactional","branded"].forEach(renderPanel);vibrate(10);}
+cloudToggle.addEventListener("click",toggleCloud);
+cloudToggle.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleCloud();}});
 
-/* ---- 7. location lookup --------------------------------------------- */
-const locEl=document.getElementById("loc"), locHint=document.getElementById("locHint");
-function parseLoc(v){
-  v=(v||"").trim();
-  if(!v) return {city:"",region:""};
-  const parts=v.split(",").map(s=>s.trim());
-  return {city:parts[0]||"", region:parts[1]||""};
+/* ===================== EEAT + content modals ===================== */
+function loadEEAT(){try{return JSON.parse(localStorage.getItem("localrank_eeat"))||{experience:"",credentials:""};}catch(_){return {experience:"",credentials:""};}}
+function saveEEAT(){try{localStorage.setItem("localrank_eeat",JSON.stringify(EEAT));}catch(_){}}
+const eeatModal=$("eeatModal"),briefModal=$("briefModal");
+function openModal(m){m.classList.add("on");}
+function closeModal(m){m.classList.remove("on");}
+function openEEAT(topic){pendingTopic=topic;$("eeatExp").value=EEAT.experience||"";$("eeatCred").value=EEAT.credentials||"";
+  $("eeatTopic").textContent="For: "+topic.title;openModal(eeatModal);setTimeout(()=>$("eeatExp").focus(),150);}
+$("eeatX").addEventListener("click",()=>closeModal(eeatModal));
+$("eeatSkip").addEventListener("click",()=>{EEAT.experience=$("eeatExp").value;EEAT.credentials=$("eeatCred").value;saveEEAT();generateBrief();});
+$("eeatGo").addEventListener("click",()=>{EEAT.experience=$("eeatExp").value;EEAT.credentials=$("eeatCred").value;saveEEAT();generateBrief();});
+let currentBriefMd="";
+function generateBrief(){
+  if(!pendingTopic)return;closeModal(eeatModal);
+  const {html,md}=buildBrief(pendingTopic,STATE,EEAT);currentBriefMd=md;
+  $("briefBody").innerHTML=html;openModal(briefModal);briefModal.querySelector(".modal-card").scrollTop=0;confetti();vibrate(16);
 }
-async function detectLocation(){
-  try{
-    const r=await fetch("https://ipapi.co/json/",{cache:"no-store"});
-    if(!r.ok) throw 0;
-    const d=await r.json();
-    if(d && d.city){
-      locEl.value = d.region_code ? `${d.city}, ${d.region_code}` : d.city;
-      locHint.textContent="auto-detected — edit if needed";
-      return;
-    }
-    throw 0;
-  }catch(_){
-    locEl.value="";locEl.placeholder="Enter your city, ST";
-    locHint.textContent="couldn't auto-detect — type your city";
-  }
-}
+$("briefX").addEventListener("click",()=>closeModal(briefModal));
+$("briefCopy").addEventListener("click",()=>{copyText(currentBriefMd);toast("Brief copied");vibrate(10);});
+$("briefMd").addEventListener("click",()=>{const blob=new Blob([currentBriefMd],{type:"text/markdown"});const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download=(pendingTopic.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").slice(0,50)||"content-brief")+".md";a.click();URL.revokeObjectURL(url);toast("Markdown downloaded");vibrate(10);});
+$("briefEdit").addEventListener("click",()=>{closeModal(briefModal);openEEAT(pendingTopic);});
+[eeatModal,briefModal].forEach(m=>m.addEventListener("click",e=>{if(e.target===m)closeModal(m);}));
+addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal(eeatModal);closeModal(briefModal);}});
 
-/* ---- 8. utilities --------------------------------------------------- */
-const q=document.getElementById("q"),sbox=document.getElementById("sbox"),
-      results=document.getElementById("results"),pmGrid=document.getElementById("pmGrid"),
-      sIndustry=document.getElementById("sIndustry"),sLoc=document.getElementById("sLoc"),
-      sCount=document.getElementById("sCount"),
-      nLocal=document.getElementById("nLocal"),nInfo=document.getElementById("nInfo"),
-      nCommercial=document.getElementById("nCommercial"),nTransactional=document.getElementById("nTransactional"),
-      nBranded=document.getElementById("nBranded");
-
-function escapeHtml(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
-function copyText(t){navigator.clipboard?.writeText(t).then(()=>toast(`Copied: ${t}`)).catch(()=>toast("Copied"));}
+/* ===================== copy / csv ===================== */
+function copyText(t){navigator.clipboard?.writeText(t).then(()=>toast(`Copied: ${t.length>40?t.slice(0,40)+"…":t}`)).catch(()=>toast("Copied"));}
 function currentTabName(){return document.querySelector(".tab.on").dataset.tab;}
-document.getElementById("copyAll").addEventListener("click",()=>{
-  const name=currentTabName();
-  let list = name==="pagemap" ? CURRENT.pagemap.flatMap(c=>c.items) : CURRENT[name];
+$("copyAll").addEventListener("click",()=>{const name=currentTabName();
+  let list = name==="pagemap"?CURRENT.pagemap?.flatMap(c=>c.items): name==="topics"?CURRENT.topics?.map(t=>t.title):CURRENT[name];
   if(!list||!list.length){toast("Nothing to copy yet");return;}
-  navigator.clipboard?.writeText(uniq(list).join("\n"));
-  toast(`Copied ${uniq(list).length} keywords`);vibrate(12);
-});
-document.getElementById("csv").addEventListener("click",()=>{
-  if(!CURRENT.local){toast("Generate keywords first");return;}
-  let rows=[["keyword","category","intent"]];
-  const add=(arr,cat,intent)=>uniq(arr).forEach(k=>rows.push([k,cat,intent]));
-  add(CURRENT.local,"Local","local");add(CURRENT.info,"Informational","top of funnel");
-  add(CURRENT.commercial,"Commercial","mid funnel");add(CURRENT.transactional,"Transactional","bottom funnel");
-  add(CURRENT.branded,"Branded","brand");
+  navigator.clipboard?.writeText(uniq(list).join("\n"));toast(`Copied ${uniq(list).length} items`);vibrate(12);});
+$("csv").addEventListener("click",()=>{if(!CURRENT.local){toast("Generate keywords first");return;}
+  let rows=[["keyword","category","intent"]];const add=(arr,cat,intent)=>uniq(arr).forEach(k=>rows.push([k,cat,intent]));
+  add(CURRENT.local,"Local","local");add(CURRENT.info,"Informational","top of funnel");add(CURRENT.commercial,"Commercial","mid funnel");
+  add(CURRENT.transactional,"Transactional","bottom funnel");add(CURRENT.branded,"Branded","brand");
+  (CURRENT.topics||[]).forEach(t=>rows.push([t.title,"Blog Topic",t.type]));
   const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
-  const blob=new Blob([csv],{type:"text/csv"});const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");a.href=url;
-  a.download=`localrank-keywords-${(STATE.city||"local").toLowerCase().replace(/\W+/g,"-")}.csv`;
-  a.click();URL.revokeObjectURL(url);toast("CSV downloaded");vibrate(12);
-});
+  const blob=new Blob([csv],{type:"text/csv"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;
+  a.download=`localrank-${(STATE.city||"local").toLowerCase().replace(/\W+/g,"-")}.csv`;a.click();URL.revokeObjectURL(url);toast("CSV downloaded");vibrate(12);});
 
-const toastEl=document.getElementById("toast"),toastMsg=document.getElementById("toastMsg");
-let toastT;function toast(m){toastMsg.textContent=m;toastEl.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>toastEl.classList.remove("show"),1700);}
+/* ===================== location ===================== */
+function parseLoc(v){v=(v||"").trim();if(!v)return {city:"",region:""};const p=v.split(",").map(s=>s.trim());return {city:p[0]||"",region:p[1]||""};}
+async function detectLocation(){try{const r=await fetch("https://ipapi.co/json/",{cache:"no-store"});if(!r.ok)throw 0;const d=await r.json();
+  if(d&&d.city){locEl.value=d.region_code?`${d.city}, ${d.region_code}`:d.city;locHint.textContent="auto-detected — edit if needed";return;}throw 0;}
+  catch(_){locEl.value="";locEl.placeholder="Enter your city, ST";locHint.textContent="couldn't auto-detect — type your city";}}
+
+/* ===================== misc ui ===================== */
+const toastEl=$("toast"),toastMsg=$("toastMsg");let toastT;
+function toast(m){toastMsg.textContent=m;toastEl.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>toastEl.classList.remove("show"),1900);}
 function shake(el){el.animate([{transform:"translateX(0)"},{transform:"translateX(-8px)"},{transform:"translateX(8px)"},{transform:"translateX(0)"}],{duration:300});}
 function vibrate(ms){try{navigator.vibrate&&navigator.vibrate(ms);}catch(_){}}
-function ripple(e,el){const r=document.createElement("span");r.className="ripple";const rect=el.getBoundingClientRect();const d=Math.max(rect.width,rect.height);r.style.width=r.style.height=d+"px";r.style.left=(e.clientX-rect.left-d/2)+"px";r.style.top=(e.clientY-rect.top-d/2)+"px";el.appendChild(r);setTimeout(()=>r.remove(),600);}
+function ripple(e,el){const r=document.createElement("span");r.className="ripple";const rect=el.getBoundingClientRect();const d=Math.max(rect.width,rect.height);
+  r.style.width=r.style.height=d+"px";r.style.left=((e.clientX||rect.left+rect.width/2)-rect.left-d/2)+"px";r.style.top=((e.clientY||rect.top+rect.height/2)-rect.top-d/2)+"px";
+  el.appendChild(r);setTimeout(()=>r.remove(),600);}
 
-/* ---- 9. examples ---------------------------------------------------- */
 const EXAMPLES=["landscaper","plumber","roofing company","dentist","med spa","hvac repair","personal injury lawyer","restaurant","auto repair","house cleaning"];
-const exWrap=document.getElementById("examples");
+const exWrap=$("examples");
 EXAMPLES.forEach(e=>{const b=document.createElement("button");b.type="button";b.className="ex";b.textContent=e;b.addEventListener("click",()=>{q.value=e;run();});exWrap.appendChild(b);});
+$("form").addEventListener("submit",e=>{e.preventDefault();run();});
+q.addEventListener("focus",()=>sbox.classList.add("focus"));q.addEventListener("blur",()=>sbox.classList.remove("focus"));
 
-/* ---- 10. form ------------------------------------------------------- */
-document.getElementById("form").addEventListener("submit",e=>{e.preventDefault();run();});
-q.addEventListener("focus",()=>sbox.classList.add("focus"));
-q.addEventListener("blur",()=>sbox.classList.remove("focus"));
-
-/* ===========================================================
-   INTERACTIVE / FUN LAYER  (mouse, tilt, cursor, confetti)
-   =========================================================== */
-const isTouch = matchMedia("(hover:none)").matches;
-
-/* cursor follower */
-const cur=document.getElementById("cur"),curDot=document.getElementById("curDot");
-let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my;
+/* ===================== interactive layer ===================== */
+const isTouch=matchMedia("(hover:none)").matches;
+const cur=$("cur"),curDot=$("curDot");let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my;
 if(!isTouch){
   addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;curDot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;});
-  document.addEventListener("mouseover",e=>{const hot=e.target.closest("button,a,input,.chip,.ex,.tab");cur.classList.toggle("hot",!!hot);});
+  document.addEventListener("mouseover",e=>{const hot=e.target.closest("button,a,input,.chip,.ex,.tab,.cw,.switch-wrap,.topic");cur.classList.toggle("hot",!!hot);});
   (function loop(){cx+=(mx-cx)*.18;cy+=(my-cy)*.18;cur.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
 }
-
-/* parallax blobs — mouse on desktop, device tilt on mobile */
 const blobs=[...document.querySelectorAll(".blob")];
-function parallax(nx,ny){ // nx,ny in -1..1
-  blobs.forEach((b,i)=>{const d=(i+1)*18;b.style.transform=`translate(${nx*d}px,${ny*d}px)`;});
-}
-if(!isTouch){
-  addEventListener("mousemove",e=>parallax((e.clientX/innerWidth-.5)*2,(e.clientY/innerHeight-.5)*2));
-} else {
-  window.addEventListener("deviceorientation",e=>{
-    const nx=Math.max(-1,Math.min(1,(e.gamma||0)/45));
-    const ny=Math.max(-1,Math.min(1,(e.beta||0)/45));
-    parallax(nx,ny);
-  });
-  // also react to touch drag
-  addEventListener("touchmove",e=>{const t=e.touches[0];if(t)parallax((t.clientX/innerWidth-.5)*2,(t.clientY/innerHeight-.5)*2);},{passive:true});
-}
-
-/* magnetic generate button (desktop) */
-const gen=document.getElementById("gen");
-if(!isTouch){
-  gen.addEventListener("mousemove",e=>{const r=gen.getBoundingClientRect();const x=e.clientX-r.left-r.width/2;const y=e.clientY-r.top-r.height/2;gen.style.transform=`translate(${x*.3}px,${y*.4}px)`;});
-  gen.addEventListener("mouseleave",()=>gen.style.transform="");
-}
+function parallax(nx,ny){blobs.forEach((b,i)=>{const d=(i+1)*18;b.style.transform=`translate(${nx*d}px,${ny*d}px)`;});}
+if(!isTouch){addEventListener("mousemove",e=>parallax((e.clientX/innerWidth-.5)*2,(e.clientY/innerHeight-.5)*2));}
+else{window.addEventListener("deviceorientation",e=>{parallax(Math.max(-1,Math.min(1,(e.gamma||0)/45)),Math.max(-1,Math.min(1,(e.beta||0)/45)));});
+  addEventListener("touchmove",e=>{const t=e.touches[0];if(t)parallax((t.clientX/innerWidth-.5)*2,(t.clientY/innerHeight-.5)*2);},{passive:true});}
+const gen=$("gen");
+if(!isTouch){gen.addEventListener("mousemove",e=>{const r=gen.getBoundingClientRect();gen.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.3}px,${(e.clientY-r.top-r.height/2)*.4}px)`;});
+  gen.addEventListener("mouseleave",()=>gen.style.transform="");}
 gen.addEventListener("click",e=>ripple(e,gen));
 
-/* confetti / particle burst */
-const fx=document.getElementById("fx"),ctx=fx.getContext("2d");
-let parts=[],raf=null;
-function size(){fx.width=innerWidth;fx.height=innerHeight;}
-addEventListener("resize",size);size();
+const fx=$("fx"),ctx=fx.getContext("2d");let parts=[],raf=null;
+function sizeFx(){fx.width=innerWidth;fx.height=innerHeight;}addEventListener("resize",sizeFx);sizeFx();
 const COLORS=["#7c5cff","#19e3c4","#ff5c8a","#ffd166","#7be0ff"];
-function confetti(){
-  const cxp=innerWidth/2, cyp=innerHeight*0.32;
-  for(let i=0;i<90;i++){
-    const a=Math.random()*Math.PI*2,sp=4+Math.random()*9;
-    parts.push({x:cxp,y:cyp,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,
-      g:.18+Math.random()*.12,life:1,size:4+Math.random()*5,rot:Math.random()*6.28,
-      vr:(Math.random()-.5)*.4,c:COLORS[i%COLORS.length]});
-  }
-  if(!raf) tick();
-}
-function tick(){
-  ctx.clearRect(0,0,fx.width,fx.height);
-  parts=parts.filter(p=>p.life>0);
-  parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.life-=.012;
-    ctx.save();ctx.globalAlpha=Math.max(0,p.life);ctx.translate(p.x,p.y);ctx.rotate(p.rot);
-    ctx.fillStyle=p.c;ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.6);ctx.restore();});
-  if(parts.length) raf=requestAnimationFrame(tick); else {ctx.clearRect(0,0,fx.width,fx.height);raf=null;}
-}
+function confetti(){const cxp=innerWidth/2,cyp=innerHeight*0.32;
+  for(let i=0;i<90;i++){const a=Math.random()*Math.PI*2,sp=4+Math.random()*9;
+    parts.push({x:cxp,y:cyp,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,g:.18+Math.random()*.12,life:1,size:4+Math.random()*5,rot:Math.random()*6.28,vr:(Math.random()-.5)*.4,c:COLORS[i%COLORS.length]});}
+  if(!raf)tick();}
+function tick(){ctx.clearRect(0,0,fx.width,fx.height);parts=parts.filter(p=>p.life>0);
+  parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.life-=.012;ctx.save();ctx.globalAlpha=Math.max(0,p.life);
+    ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.c;ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.6);ctx.restore();});
+  if(parts.length)raf=requestAnimationFrame(tick);else{ctx.clearRect(0,0,fx.width,fx.height);raf=null;}}
 
-/* ---- boot ---------------------------------------------------------- */
-detectLocation();
-q.focus();
+detectLocation();q.focus();
 </script>
 </body>
 </html>
