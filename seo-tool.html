@@ -241,6 +241,45 @@ footer a{color:var(--c2);text-decoration:none}
 .brief .ck li{list-style:none;position:relative;padding-left:24px}
 .brief .ck li::before{content:"\2713";position:absolute;left:0;color:var(--c2);font-weight:700}
 .brief .codeword{color:var(--c5);font-weight:600}
+
+/* service areas */
+.sa-wrap{margin:0 0 22px;padding:16px;background:rgba(124,92,255,.06);border:1px solid var(--line);border-radius:16px}
+.sa-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sa-head h3{margin:0;font-size:1rem;display:flex;align-items:center;gap:8px}
+.sa-actions{display:flex;gap:8px;flex-wrap:wrap}
+.sa-status{font-size:.8rem;color:var(--muted);margin:0 0 12px}
+.sa-cities{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.sa-city{display:inline-flex;align-items:center;gap:7px;background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:6px 8px 6px 13px;font-size:.84rem}
+.sa-city .rm{cursor:pointer;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);font-size:.85rem;line-height:1;color:var(--muted);transition:.2s}
+.sa-city .rm:hover{background:var(--c3);color:#fff}
+.sa-add{display:inline-flex;align-items:center;gap:4px;background:var(--glass);border:1px dashed var(--line);border-radius:999px;padding:3px 5px 3px 12px}
+.sa-add input{background:transparent;border:0;outline:0;color:var(--ink);font-family:inherit;font-size:.84rem;width:120px;padding:5px 2px}
+.sa-add button{cursor:pointer;border:0;background:linear-gradient(120deg,var(--c2),var(--c1));color:#04040b;font-weight:700;width:26px;height:26px;border-radius:50%;font-size:1.05rem;line-height:1}
+.sa-pages{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:680px){.sa-pages{grid-template-columns:1fr 1fr}}
+.sa-page{background:var(--glass);border:1px solid var(--line);border-radius:13px;padding:13px 14px}
+.sa-page h4{margin:0 0 3px;font-size:.92rem}
+.sa-page .slug{font-size:.72rem;color:var(--c5);margin-bottom:8px;font-weight:600;word-break:break-all}
+.sa-page .kws{display:flex;flex-wrap:wrap;gap:6px}
+.sa-page .kws span{font-size:.74rem;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:7px;padding:4px 8px;color:var(--muted)}
+
+/* full draft */
+.seg{display:inline-flex;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:11px;padding:3px;margin-bottom:16px}
+.seg button{cursor:pointer;border:0;background:transparent;color:var(--muted);font-family:"Sora";font-weight:600;font-size:.82rem;padding:8px 16px;border-radius:8px;transition:.2s}
+.seg button.on{background:linear-gradient(120deg,var(--c2),var(--c1));color:#04040b}
+.article h1.at{font-size:1.45rem;margin:0 0 10px;line-height:1.22}
+.article h2.ah{font-size:1.1rem;margin:22px 0 8px}
+.article p{font-size:.94rem;line-height:1.7;margin:0 0 12px;color:#dcdef0}
+.article ul,.article ol{margin:0 0 13px;padding-left:22px}
+.article li{margin:6px 0;font-size:.92rem;line-height:1.6}
+.article li::marker{color:var(--c1)}
+.article .note{font-size:.78rem;color:var(--muted);font-style:italic;border-left:2px solid var(--c4);padding:2px 0 2px 11px;margin:0 0 16px}
+.article table{width:100%;border-collapse:collapse;margin:0 0 8px;font-size:.86rem}
+.article th,.article td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+.article th{background:rgba(124,92,255,.14);font-weight:600}
+.article .ebox{background:rgba(255,209,102,.07);border:1px solid var(--line);border-left:3px solid var(--c4);border-radius:11px;padding:13px 15px;margin:18px 0 14px}
+.article .ebox h2{margin:0 0 6px;font-size:1rem}
+.article .cta{background:linear-gradient(120deg,rgba(25,227,196,.14),rgba(124,92,255,.14));border:1px solid var(--line);border-radius:13px;padding:15px;text-align:center;font-weight:600;margin-top:18px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -312,7 +351,7 @@ footer a{color:var(--c2);text-decoration:none}
     <div class="panel" data-panel="commercial"><p class="panel-lead">Comparison &amp; "best of" searches — buyers researching who to hire. Great for <b>service pages</b> and comparison posts.</p><div class="view"></div></div>
     <div class="panel" data-panel="transactional"><p class="panel-lead">Ready-to-buy searches — your <b>service pages</b> and conversion landing pages.</p><div class="view"></div></div>
     <div class="panel" data-panel="branded"><p class="panel-lead">Searches for your business by name — own your <b>brand SERP</b>.</p><div class="view"></div></div>
-    <div class="panel" data-panel="pagemap"><p class="panel-lead">Your keywords organized into the pages you should actually build.</p><div class="pm-grid" id="pmGrid"></div></div>
+    <div class="panel" data-panel="pagemap"><p class="panel-lead">Your keywords organized into the pages you should actually build.</p><div id="serviceAreas"></div><div class="pm-grid" id="pmGrid"></div></div>
   </section>
 </div>
 
@@ -354,7 +393,12 @@ footer a{color:var(--c2);text-decoration:none}
       <button class="x" id="briefX" type="button">×</button>
     </div>
     <div class="modal-body">
+      <div class="seg" id="briefSeg">
+        <button data-view="brief" class="on" type="button">📋 Content brief</button>
+        <button data-view="article" type="button">📝 Full draft</button>
+      </div>
       <div class="brief" id="briefBody"></div>
+      <div class="article" id="articleBody" style="display:none"></div>
       <div class="modal-foot">
         <button class="btn-primary" id="briefCopy" type="button">Copy brief</button>
         <button class="btn-ghost" id="briefMd" type="button">Export Markdown</button>
@@ -493,7 +537,6 @@ function buildTopics(kw,state){
 /* ===================== page map ===================== */
 function buildPageMap(kw,state){const city=state.city||"[city]";return [
   {ico:"🏠",bg:"linear-gradient(135deg,#19e3c4,#7c5cff)",title:"Homepage",desc:"Your strongest local terms — the searches you most want to rank for.",items:kw.local.slice(0,8)},
-  {ico:"📌",bg:"linear-gradient(135deg,#7c5cff,#ff5c8a)",title:"Service-Area Pages",desc:`One page per city/neighborhood you serve (swap "${city}" for nearby towns).`,items:kw.local.filter(k=>k.includes(city)||k.includes("[city]")||k.includes("in ")).slice(0,8)},
   {ico:"🧰",bg:"linear-gradient(135deg,#ff5c8a,#ffd166)",title:"Service Pages",desc:"One page per service, optimized for ready-to-buy searches.",items:[...kw.transactional.slice(0,5),...kw.commercial.slice(0,3)]},
   {ico:"✍️",bg:"linear-gradient(135deg,#ffd166,#19e3c4)",title:"Blog & How-To Guides",desc:"Informational posts that build authority and capture early-stage searchers.",items:kw.info.filter(k=>/how|what|tips|ideas|worth|vs|signs|questions/.test(k)).slice(0,8)},
   {ico:"💲",bg:"linear-gradient(135deg,#19e3c4,#ffd166)",title:"Cost & Pricing Articles",desc:'"How much does X cost" articles rank fast and pull in high-intent readers.',items:[...kw.info.filter(k=>/cost|price|average/.test(k)),...kw.commercial.filter(k=>/price|cost|cheap|quote/.test(k))].slice(0,8)},
@@ -564,12 +607,98 @@ function buildBrief(topic,state,eeat){
   return {html:h,md};
 }
 
+/* ===================== service areas ===================== */
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
+function areaKeywords(city){const s=(STATE.services||[]).slice(0,4);
+  return uniq([...s.map(x=>`${x} in ${city}`),`${STATE.core} ${city}`,`best ${STATE.core} in ${city}`,`${STATE.core} near ${city}`]);}
+async function fetchNearby(){
+  if(GEO.lat==null||GEO.lng==null)return [];
+  const lat=(GEO.lat>=0?"+":"-")+Math.abs(GEO.lat).toFixed(4);
+  const lng=(GEO.lng>=0?"+":"-")+Math.abs(GEO.lng).toFixed(4);
+  try{const ctrl=new AbortController();const to=setTimeout(()=>ctrl.abort(),7000);
+    const r=await fetch(`https://geodb-free-service.wirefreethought.com/v1/geo/locations/${lat}${lng}/nearbyCities?radius=45&limit=12&minPopulation=4000&sort=-population&distanceUnit=MI`,{signal:ctrl.signal});
+    clearTimeout(to);if(!r.ok)throw 0;const d=await r.json();const home=(STATE.city||"").toLowerCase();
+    return uniq((d.data||[]).map(c=>c.city).filter(n=>n&&n.toLowerCase()!==home)).map(titleCase).slice(0,8);
+  }catch(_){return [];}
+}
+let nearbyBusy=false;
+async function loadNearby(){
+  if(nearbyBusy)return;const st=()=>$("saStatus");
+  if(GEO.lat==null){if(st())st().textContent="Add the cities you serve below — each becomes its own optimized page.";return;}
+  nearbyBusy=true;if(st())st().textContent="🔄 Finding nearby cities…";
+  const cities=await fetchNearby();nearbyBusy=false;
+  if(cities.length){STATE.areas=uniq([...(STATE.areas||[]),...cities]).map(titleCase);renderServiceAreas();toast(`Added ${cities.length} nearby cities`);}
+  else if(st())st().textContent="Couldn't auto-find nearby cities — add your service towns below.";
+}
+function addArea(name){name=(name||"").trim();if(!name)return;
+  if((STATE.areas||[]).some(c=>c.toLowerCase()===name.toLowerCase())){toast("Already added");return;}
+  STATE.areas=[...(STATE.areas||[]),titleCase(name)];renderServiceAreas();vibrate(8);}
+function addAreaFromInput(){const i=$("saInput");if(i){addArea(i.value);i.value="";i.focus();}}
+function renderServiceAreas(){
+  const host=$("serviceAreas");if(!host)return;const areas=STATE.areas||[];
+  const chips=areas.map((c,i)=>`<span class="sa-city"><b>${escapeHtml(c)}</b><span class="rm" data-rm="${i}" title="Remove">×</span></span>`).join("");
+  const pages=areas.map(c=>`<div class="sa-page"><h4>${escapeHtml(c)} ${escapeHtml(titleCase(STATE.core))} page</h4><div class="slug">/service-areas/${slugify(c)}/</div><div class="kws">${areaKeywords(c).slice(0,6).map(k=>`<span>${escapeHtml(k)}</span>`).join("")}</div></div>`).join("");
+  host.innerHTML=`<div class="sa-wrap">
+    <div class="sa-head"><h3>📌 Service-Area Pages</h3>
+      <div class="sa-actions"><button class="act" id="saNearby" type="button">🔄 Find nearby cities</button><button class="act" id="saCopy" type="button">Copy all</button></div></div>
+    <p class="sa-status" id="saStatus">Build one page per town you serve — each becomes its own optimized page targeting local searchers. Add or remove cities below.</p>
+    <div class="sa-cities">${chips}<span class="sa-add"><input id="saInput" placeholder="add a city…" aria-label="Add a city" /><button id="saAddBtn" type="button">+</button></span></div>
+    <div class="sa-pages">${pages||'<div class="empty">Add a city to generate its service-area page.</div>'}</div></div>`;
+  host.querySelectorAll(".rm").forEach(b=>b.addEventListener("click",()=>{STATE.areas.splice(+b.dataset.rm,1);renderServiceAreas();vibrate(8);}));
+  $("saAddBtn").addEventListener("click",addAreaFromInput);
+  $("saInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addAreaFromInput();}});
+  $("saNearby").addEventListener("click",loadNearby);
+  $("saCopy").addEventListener("click",()=>{const all=[];areas.forEach(c=>areaKeywords(c).forEach(k=>all.push(k)));if(!all.length){toast("Add a city first");return;}navigator.clipboard?.writeText(uniq(all).join("\n"));toast(`Copied ${uniq(all).length} service-area keywords`);vibrate(10);});
+}
+
+/* ===================== full article draft ===================== */
+function cleanHeading(h){let s=h.replace(/\s*[—-]\s*(add|link|target|mark).*$/i,"").replace(/\s*\((target|add|mark|one|each).*?\)\s*$/i,"").replace(/\s*\(.*?\)\s*$/,"").trim();return s.charAt(0).toUpperCase()+s.slice(1);}
+function tableHtml(){return `<table><thead><tr><th>Project type / size</th><th>Typical range*</th></tr></thead><tbody><tr><td>Small / basic</td><td>$ – $$</td></tr><tr><td>Mid-size</td><td>$$ – $$$</td></tr><tr><td>Large / premium</td><td>$$$ – $$$$</td></tr></tbody></table><p class="note">*Replace these with real local pricing before publishing — never publish placeholder numbers.</p>`;}
+function tableMd(){return `| Project type / size | Typical range* |\n|---|---|\n| Small / basic | $ – $$ |\n| Mid-size | $$ – $$$ |\n| Large / premium | $$$ – $$$$ |\n\n*Replace with real local pricing before publishing.\n\n`;}
+function articleBlock(h,S,Sl,C,brand){const t=h.toLowerCase();const B=brand.charAt(0).toUpperCase()+brand.slice(1);
+  if(/quick answer|average .*cost|real cost|what .*cost/.test(t))return {paras:[`If you're budgeting for ${Sl} in ${C}, most homeowners spend somewhere within a typical local range. Your exact cost comes down to the size of the project, the materials you choose, and the condition of what you're starting with.`],table:true};
+  if(/breakdown|by project|by type|by size|included/.test(t))return {paras:[`Here's a rough idea of how ${Sl} pricing tends to break down. Treat these as starting points — a quick on-site visit is the only way to pin down your real number.`],table:true};
+  if(/factor/.test(t))return {paras:[`A handful of things move the price up or down on almost every ${Sl} project in ${C}:`],list:["The size and scope of the work","The quality of materials and finishes you choose","Site access and how much prep is required","Permits and local code requirements","The time of year and current demand"]};
+  if(/choose|evaluate|trust|right .*company|find the best/.test(t))return {paras:[`Not every ${Sl} company is equal. Before you sign anything, make sure your ${C} provider checks these boxes:`],list:["Properly licensed and fully insured","Strong, recent reviews from local customers","A written, itemized quote — not a vague ballpark","Real photos of past work in your area","A clear workmanship guarantee in writing"]};
+  if(/mistake|red flag|avoid/.test(t))return {paras:[`We see the same avoidable mistakes again and again. Steer clear of these and you'll save yourself time, money, and headaches:`],list:["Choosing on price alone","Skipping a written contract","Not verifying license and insurance","Ignoring reviews and references","Rushing the decision under sales pressure"]};
+  if(/step|how .*work|prepare|process/.test(t))return {paras:[`Here's what the ${Sl} process typically looks like from start to finish:`],ordered:true,list:["A free consultation and on-site estimate","A custom plan and written, itemized quote","Scheduling and any prep work","The work itself, completed to code","A final walkthrough and full cleanup"]};
+  if(/\bsign|need\b/.test(t))return {paras:[`Wondering whether it's time for ${Sl}? These are the most common signs ${C} homeowners shouldn't ignore:`],list:["Visible wear, damage, or age","Climbing repair or utility bills","Performance that's clearly dropped off","It's been years since the last service","You're planning to sell or upgrade soon"]};
+  if(/save|financing|budget/.test(t))return {paras:[`Quality ${Sl} doesn't have to break the bank. A few smart moves keep costs down without cutting corners:`],list:["Get multiple itemized quotes","Bundle related work together","Schedule during the off-season","Ask about financing or payment plans","Invest in quality up front to avoid repeat costs"]};
+  if(/worth/.test(t))return {paras:[`So is professional ${Sl} actually worth it? For the vast majority of homeowners in ${C}, yes. Done right, it protects your investment, prevents expensive surprises down the road, and usually comes with a guarantee you simply don't get going the DIY route.`]};
+  if(/maintenance|next step|after|upkeep/.test(t))return {paras:[`Once your ${Sl} is complete, a little upkeep goes a long way. Stay on top of routine maintenance and you'll protect your investment for years. When in doubt, ${B} is just a phone call away.`]};
+  if(/local|why local|\barea\b/.test(t))return {paras:[`Hiring a local ${C} ${Sl} company has real advantages: faster response times, first-hand knowledge of local codes and conditions, and a community reputation they can't afford to risk.`]};
+  return {paras:[`When it comes to ${Sl} in ${C}, the details make all the difference. ${B} focuses on doing the job right the first time — quality materials, careful workmanship, and clear communication from start to finish.`]};
+}
+function buildArticle(topic,state,eeat){
+  const S=titleCase(topic.subject),Sl=S.toLowerCase(),C=state.city||"[city]";
+  const brand=state.brand&&state.brand.length>1?state.brand:"our team";
+  const exp=(eeat.experience||"").trim(),cred=(eeat.credentials||"").trim();
+  const outline=outlineFor(topic.type,S,C);
+  let html=`<h1 class="at">${escapeHtml(topic.title)}</h1>`,md=`# ${topic.title}\n\n`;
+  html+=`<p class="note">First-draft article generated by LocalRank. Edit for accuracy, add your own photos, verify all pricing, and publish under a named author with a bio.</p>`;
+  const intro=`Looking for trustworthy ${Sl} in ${C}? You're in the right place. Below, we break down what to expect, what it costs, and how to choose the right pro — so you can make a confident decision.`;
+  html+=`<p>${escapeHtml(intro)}</p>`;md+=intro+"\n\n";
+  if(exp){const e=`Here's where we're coming from: ${exp}`;html+=`<p>${escapeHtml(e)}</p>`;md+=e+"\n\n";}
+  outline.forEach(h=>{const head=cleanHeading(h);const blk=articleBlock(h,S,Sl,C,brand);
+    html+=`<h2 class="ah">${escapeHtml(head)}</h2>`;md+=`\n## ${head}\n\n`;
+    blk.paras.forEach(p=>{html+=`<p>${escapeHtml(p)}</p>`;md+=p+"\n\n";});
+    if(blk.table){html+=tableHtml();md+=tableMd();}
+    if(blk.list){const tag=blk.ordered?"ol":"ul";html+=`<${tag}>${blk.list.map(li=>`<li>${escapeHtml(li)}</li>`).join("")}</${tag}>`;md+=blk.list.map((li,i)=>`${blk.ordered?(i+1)+".":"-"} ${li}`).join("\n")+"\n\n";}});
+  const faqs=[[`How much does ${Sl} cost in ${C}?`,`Most ${Sl} projects in ${C} fall within a typical local range, but your final price depends on scope, materials, and the condition of the existing space. The most accurate way to find out is a free on-site estimate.`],[`How long does ${Sl} take?`,`It depends on the size of the job. Smaller projects can be finished in a day, while larger ${Sl} work may take several days to a few weeks. You'll get a clear schedule before anything begins.`],[`Is professional ${Sl} worth it?`,`For most homeowners, yes — professional ${Sl} protects your investment, avoids costly mistakes, and usually includes a workmanship guarantee that DIY can't match.`],[`How do I choose a ${Sl} company near me?`,`Look for licensing and insurance, strong local reviews, clear written quotes, and real examples of work in ${C}. Avoid anyone who pressures you or won't put the details in writing.`]];
+  html+=`<h2 class="ah">Frequently asked questions</h2>`;md+=`\n## Frequently asked questions\n\n`;
+  faqs.forEach(([qq,a])=>{html+=`<p><b>${escapeHtml(qq)}</b></p><p>${escapeHtml(a)}</p>`;md+=`**${qq}**\n\n${a}\n\n`;});
+  if(cred){html+=`<div class="ebox"><h2>Why trust ${escapeHtml(state.brand||"us")}</h2><p>${escapeHtml(cred)}</p></div>`;md+=`\n## Why trust ${state.brand||"us"}\n\n${cred}\n\n`;}
+  const cta=`Ready to get started? Get a free ${Sl} quote in ${C} today — ${brand==="our team"?"contact us":brand} would be glad to help.`;
+  html+=`<div class="cta">${escapeHtml(cta)}</div>`;md+=`---\n\n${cta}\n`;
+  return {html,md};
+}
+
 /* ===================== state & render ===================== */
 const ACCENT={local:"var(--c2)",info:"var(--c4)",commercial:"var(--c1)",transactional:"var(--c3)",branded:"#7be0ff"};
 const CLOUDCOL={local:"#19e3c4",info:"#ffd166",commercial:"#9b8bff",transactional:"#ff7ba3",branded:"#7be0ff"};
 const TYPECOL={cost:"#19e3c4",howto:"#7be0ff",best:"#9b8bff",ideas:"#ff7ba3",tips:"#ffd166",emergency:"#ff5c8a",guide:"#c7bcff"};
 const LABELS={local:"local",info:"info",commercial:"buy-research",transactional:"buy",branded:"brand"};
-let STATE={city:"",region:""},CURRENT={},EEAT=loadEEAT(),viewMode="chips",pendingTopic=null;
+let STATE={city:"",region:""},CURRENT={},EEAT=loadEEAT(),viewMode="chips",pendingTopic=null,GEO={lat:null,lng:null};
 
 const $=id=>document.getElementById(id);
 const q=$("q"),sbox=$("sbox"),results=$("results"),pmGrid=$("pmGrid"),topicsGrid=$("topicsGrid"),
@@ -597,6 +726,7 @@ function run(){
 
   ["local","info","commercial","transactional","branded"].forEach(renderPanel);
   renderTopics();renderPageMap();
+  STATE.areas=STATE.city?[STATE.city]:[];renderServiceAreas();loadNearby();
   results.classList.add("show");selectTab("local");
   results.scrollIntoView({behavior:"smooth",block:"start"});confetti();vibrate(18);
 }
@@ -695,16 +825,26 @@ function openEEAT(topic){pendingTopic=topic;$("eeatExp").value=EEAT.experience||
 $("eeatX").addEventListener("click",()=>closeModal(eeatModal));
 $("eeatSkip").addEventListener("click",()=>{EEAT.experience=$("eeatExp").value;EEAT.credentials=$("eeatCred").value;saveEEAT();generateBrief();});
 $("eeatGo").addEventListener("click",()=>{EEAT.experience=$("eeatExp").value;EEAT.credentials=$("eeatCred").value;saveEEAT();generateBrief();});
-let currentBriefMd="";
+let currentBriefMd="",currentArticleMd="",briefView="brief";
+function setBriefView(v){briefView=v;
+  $("briefBody").style.display=v==="brief"?"":"none";
+  $("articleBody").style.display=v==="article"?"":"none";
+  document.querySelectorAll("#briefSeg button").forEach(b=>b.classList.toggle("on",b.dataset.view===v));
+  $("briefCopy").textContent=v==="article"?"Copy article":"Copy brief";
+  briefModal.querySelector(".modal-card").scrollTop=0;
+}
 function generateBrief(){
   if(!pendingTopic)return;closeModal(eeatModal);
-  const {html,md}=buildBrief(pendingTopic,STATE,EEAT);currentBriefMd=md;
-  $("briefBody").innerHTML=html;openModal(briefModal);briefModal.querySelector(".modal-card").scrollTop=0;confetti();vibrate(16);
+  const b=buildBrief(pendingTopic,STATE,EEAT),a=buildArticle(pendingTopic,STATE,EEAT);
+  currentBriefMd=b.md;currentArticleMd=a.md;
+  $("briefBody").innerHTML=b.html;$("articleBody").innerHTML=a.html;
+  setBriefView("brief");openModal(briefModal);briefModal.querySelector(".modal-card").scrollTop=0;confetti();vibrate(16);
 }
+$("briefSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b){setBriefView(b.dataset.view);vibrate(6);}});
 $("briefX").addEventListener("click",()=>closeModal(briefModal));
-$("briefCopy").addEventListener("click",()=>{copyText(currentBriefMd);toast("Brief copied");vibrate(10);});
-$("briefMd").addEventListener("click",()=>{const blob=new Blob([currentBriefMd],{type:"text/markdown"});const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");a.href=url;a.download=(pendingTopic.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").slice(0,50)||"content-brief")+".md";a.click();URL.revokeObjectURL(url);toast("Markdown downloaded");vibrate(10);});
+$("briefCopy").addEventListener("click",()=>{copyText(briefView==="article"?currentArticleMd:currentBriefMd);toast(briefView==="article"?"Article copied":"Brief copied");vibrate(10);});
+$("briefMd").addEventListener("click",()=>{const md=briefView==="article"?currentArticleMd:currentBriefMd;const blob=new Blob([md],{type:"text/markdown"});const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download=(pendingTopic.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").slice(0,50)||"content")+(briefView==="article"?"-article":"-brief")+".md";a.click();URL.revokeObjectURL(url);toast("Markdown downloaded");vibrate(10);});
 $("briefEdit").addEventListener("click",()=>{closeModal(briefModal);openEEAT(pendingTopic);});
 [eeatModal,briefModal].forEach(m=>m.addEventListener("click",e=>{if(e.target===m)closeModal(m);}));
 addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal(eeatModal);closeModal(briefModal);}});
@@ -728,7 +868,9 @@ $("csv").addEventListener("click",()=>{if(!CURRENT.local){toast("Generate keywor
 /* ===================== location ===================== */
 function parseLoc(v){v=(v||"").trim();if(!v)return {city:"",region:""};const p=v.split(",").map(s=>s.trim());return {city:p[0]||"",region:p[1]||""};}
 async function detectLocation(){try{const r=await fetch("https://ipapi.co/json/",{cache:"no-store"});if(!r.ok)throw 0;const d=await r.json();
-  if(d&&d.city){locEl.value=d.region_code?`${d.city}, ${d.region_code}`:d.city;locHint.textContent="auto-detected — edit if needed";return;}throw 0;}
+  if(d&&d.city){GEO.lat=parseFloat(d.latitude);GEO.lng=parseFloat(d.longitude);if(isNaN(GEO.lat))GEO.lat=null;if(isNaN(GEO.lng))GEO.lng=null;
+    locEl.value=d.region_code?`${d.city}, ${d.region_code}`:d.city;locHint.textContent="auto-detected — edit if needed";
+    if(CURRENT.local&&(!STATE.areas||!STATE.areas.length))loadNearby();return;}throw 0;}
   catch(_){locEl.value="";locEl.placeholder="Enter your city, ST";locHint.textContent="couldn't auto-detect — type your city";}}
 
 /* ===================== misc ui ===================== */
