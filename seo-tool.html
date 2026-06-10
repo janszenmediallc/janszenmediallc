@@ -284,20 +284,25 @@ footer a{color:var(--c2);text-decoration:none}
 /* insights tab accent */
 .tab[data-accent="insights"].on{color:#04040b;background:linear-gradient(120deg,#7be0ff,var(--c2));border-color:transparent}
 
-/* galaxy */
-.galaxy{display:none;position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,#0c0b22,#05050f);margin-bottom:18px}
-.results.galaxy-on .tabs,.results.galaxy-on .panel{display:none!important}
-.results.galaxy-on .galaxy{display:block;animation:fade .4s}
-#galaxyCanvas{display:block;width:100%;height:68vh;min-height:430px;touch-action:none;cursor:grab}
-#galaxyCanvas:active{cursor:grabbing}
-.gx-bar{position:absolute;top:12px;left:12px;right:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;z-index:2}
-.gx-bar .legend{display:flex;gap:10px;flex-wrap:wrap;background:rgba(8,8,20,.55);border:1px solid var(--line);border-radius:10px;padding:7px 11px;backdrop-filter:blur(6px)}
-.gx-bar .lg{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;color:var(--muted)}
-.gx-bar .lg i{width:9px;height:9px;border-radius:50%;display:inline-block}
-.gx-bar .sp{flex:1}
-.gx-bar button{cursor:pointer;border:1px solid var(--line);background:rgba(8,8,20,.55);color:var(--ink);font-family:inherit;font-size:.74rem;font-weight:600;padding:7px 11px;border-radius:9px;backdrop-filter:blur(6px);transition:.2s}
-.gx-bar button:hover{border-color:var(--c2)}
-.gx-hint{position:absolute;bottom:12px;left:12px;right:12px;font-size:.72rem;color:var(--muted);background:rgba(8,8,20,.5);border:1px solid var(--line);border-radius:9px;padding:6px 10px;pointer-events:none;backdrop-filter:blur(6px);width:fit-content;max-width:calc(100% - 24px)}
+/* opportunity map */
+.opp-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:11px}
+.opp-chip{cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-size:.76rem;background:var(--glass);border:1px solid var(--line);padding:6px 12px;border-radius:999px;transition:.2s;user-select:none}
+.opp-chip:hover{border-color:var(--c2)}
+.opp-chip i{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+.opp-chip.off{opacity:.42;filter:grayscale(.6)}
+.opp-wrap{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:6px}
+.opp-wrap svg{display:block;width:100%;height:auto}
+.bub{cursor:pointer;transition:opacity .5s ease, r .3s cubic-bezier(.2,.9,.3,1.3)}
+.bub:hover{filter:brightness(1.4)}
+.opp-tip{position:absolute;pointer-events:none;z-index:5;background:#14122e;border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:var(--shadow);opacity:0;transform:translateY(4px);transition:opacity .15s;max-width:250px;left:0;top:0}
+.opp-tip.on{opacity:1;transform:none}
+.opp-tip .tk{font-weight:600;margin-bottom:7px;font-size:.84rem;line-height:1.25}
+.opp-tip .badge{font-size:.58rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;padding:2px 7px;border-radius:6px;margin-bottom:8px;display:inline-block}
+.opp-tip .mm{display:grid;grid-template-columns:auto 1fr auto;gap:4px 9px;align-items:center;font-size:.72rem;color:var(--muted)}
+.opp-tip .mm b{color:var(--ink);font-family:"Sora";font-size:.74rem}
+.opp-tip .mbar{height:5px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden;min-width:64px}
+.opp-tip .mbar i{display:block;height:100%;border-radius:9px}
+.opp-tip .go{margin-top:8px;font-size:.7rem;color:var(--c2)}
 
 /* insights */
 .ins-hero{display:grid;gap:14px;grid-template-columns:1fr;margin-bottom:6px}
@@ -375,9 +380,6 @@ footer a{color:var(--c2);text-decoration:none}
         <span class="tag live"><b id="sCount">0</b> keywords</span>
       </div>
       <div class="actions">
-        <div class="switch-wrap" id="cloudToggle" role="switch" aria-checked="false" tabindex="0" title="Toggle the interactive Keyword Galaxy">
-          <span>🌌 Galaxy view</span><span class="switch"></span>
-        </div>
         <button class="act" id="copyAll">Copy tab</button>
         <button class="act" id="csv">Export CSV</button>
       </div>
@@ -394,13 +396,6 @@ footer a{color:var(--c2);text-decoration:none}
       <button class="tab" data-accent="insights" data-tab="insights" type="button">📊 Insights</button>
     </div>
 
-    <div class="galaxy" id="galaxy">
-      <div class="gx-bar"><div class="legend" id="gxLegend"></div><span class="sp"></span>
-        <button id="gxShuffle" type="button">🔀 Shuffle</button><button id="gxReset" type="button">⟳ Reset view</button></div>
-      <canvas id="galaxyCanvas"></canvas>
-      <div class="gx-hint">Drag to pan · scroll / pinch to zoom · drag a star to move it · tap a star to make a blog topic ✨</div>
-    </div>
-
     <div class="panel on" data-panel="local"><p class="panel-lead">High-intent "near me" and "[city]" searches — power your <b>homepage</b> and <b>service-area pages</b>. Tap any keyword to spin it into a blog topic ✨.</p><div class="view"></div></div>
     <div class="panel" data-panel="topics"><p class="panel-lead">Traffic-ready blog titles generated from your keywords. Hit <b>Generate content</b> to capture your EEAT expertise and build a full SEO brief.</p><div class="topics-grid" id="topicsGrid"></div></div>
     <div class="panel" data-panel="info"><p class="panel-lead">Long-tail, question &amp; "cost of" searches — fuel for your <b>blog, how-to guides, and cost articles</b>.</p><div class="view"></div></div>
@@ -411,6 +406,8 @@ footer a{color:var(--c2);text-decoration:none}
     <div class="panel" data-panel="insights"><p class="panel-lead">Your keyword strategy as shareable infographics — opportunity scores, a buyer-journey funnel, an opportunity map, and a 12-week content calendar.</p>
       <div class="ins-actions"><button class="act" id="insPng" type="button">⬇️ Download infographic (PNG)</button><button class="act" id="insCsv" type="button">Export scored CSV</button></div>
       <div id="insHero"></div>
+      <div class="ins-h">🗺️ Opportunity map <span style="font-weight:400;color:var(--muted);font-size:.74rem">value vs. difficulty · bubble size = traffic · hover for detail · click to make a topic</span></div>
+      <div id="oppMap"></div>
       <div class="ins-h">🗓️ 12-week content calendar <span style="font-weight:400;color:var(--muted);font-size:.74rem">tap a week to draft it</span></div>
       <div class="cal" id="insCal"></div>
       <div class="ins-h">📈 Shareable infographic</div>
@@ -762,7 +759,7 @@ const ACCENT={local:"var(--c2)",info:"var(--c4)",commercial:"var(--c1)",transact
 const CLOUDCOL={local:"#19e3c4",info:"#ffd166",commercial:"#9b8bff",transactional:"#ff7ba3",branded:"#7be0ff"};
 const TYPECOL={cost:"#19e3c4",howto:"#7be0ff",best:"#9b8bff",ideas:"#ff7ba3",tips:"#ffd166",emergency:"#ff5c8a",guide:"#c7bcff"};
 const LABELS={local:"local",info:"info",commercial:"buy-research",transactional:"buy",branded:"brand"};
-let STATE={city:"",region:""},CURRENT={},EEAT=loadEEAT(),viewMode="chips",pendingTopic=null,GEO={lat:null,lng:null};
+let STATE={city:"",region:""},CURRENT={},EEAT=loadEEAT(),pendingTopic=null,GEO={lat:null,lng:null};
 
 const $=id=>document.getElementById(id);
 const q=$("q"),sbox=$("sbox"),results=$("results"),pmGrid=$("pmGrid"),topicsGrid=$("topicsGrid"),
@@ -791,7 +788,7 @@ function run(){
   ["local","info","commercial","transactional","branded"].forEach(renderPanel);
   renderTopics();renderPageMap();
   STATE.areas=STATE.city?[STATE.city]:[];renderServiceAreas();loadNearby();
-  buildScores();renderInsights();if(galaxyOn)buildGalaxy();
+  buildScores();renderInsights();
   results.classList.add("show");selectTab("local");
   results.scrollIntoView({behavior:"smooth",block:"start"});confetti();vibrate(18);
 }
@@ -812,15 +809,6 @@ function chipEl(text,accentName,i){
   c.addEventListener("click",e=>{addTopicFrom(text);ripple(e,c);vibrate(10);});
   c.querySelector(".cp").addEventListener("click",e=>{e.stopPropagation();copyText(text);c.classList.add("copied");setTimeout(()=>c.classList.remove("copied"),900);vibrate(8);});
   setTimeout(()=>c.classList.add("in"),Math.min(i,30)*16);return c;
-}
-function cloudEl(text,accentName,i,max){
-  const sc=scoreKeyword(text);const size=(0.82+(sc/max)*1.15).toFixed(2);
-  const col=CLOUDCOL[accentName]||"#19e3c4";
-  const w=document.createElement("span");w.className="cw";w.style.fontSize=size+"rem";w.style.color=col;
-  w.style.animationDelay=(i*16)+"ms";w.title="Click → blog topic · "+text;
-  w.innerHTML=`<span class="f" style="animation-delay:${(i%9)*0.4}s">${escapeHtml(text)}</span>`;
-  w.addEventListener("click",e=>{addTopicFrom(text);vibrate(10);});
-  return w;
 }
 function renderTopics(){
   topicsGrid.innerHTML="";
@@ -908,8 +896,53 @@ function renderInsights(){
     li.innerHTML=`<span class="kw">${escapeHtml(w.k)}</span><span class="sc">${w.score}</span><span class="bar"><i></i></span>`;
     li.title="Click → blog topic";li.addEventListener("click",()=>addTopicFrom(w.k));
     ql.appendChild(li);setTimeout(()=>{li.querySelector("i").style.width=Math.round(w.score/maxS*100)+"%";},120+i*60);});
+  renderOpportunityMap(scored);
   renderCalendar();
   const g=$("insGraphic");g.innerHTML="";g.appendChild(buildInfographic(overall,traffic,scored));
+}
+let oppActive=null;
+function renderOpportunityMap(scored){
+  const host=$("oppMap");if(!host)return;
+  if(!oppActive)oppActive=new Set(["local","info","commercial","transactional","branded"]);
+  const NAMES={local:"Local",info:"Informational",commercial:"Commercial",transactional:"Transactional",branded:"Branded"};
+  const legend=Object.keys(NAMES).map(k=>`<span class="opp-chip${oppActive.has(k)?"":" off"}" data-int="${k}"><i style="background:${ICOL[k]}"></i>${NAMES[k]}</span>`).join("");
+  const W=920,H=560,mL=64,mR=26,mT=30,mB=58,pw=W-mL-mR,ph=H-mT-mB,midX=mL+pw/2,midY=mT+ph/2;
+  let svg=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Sora,sans-serif">`;
+  svg+=`<rect x="${mL}" y="${mT}" width="${pw/2}" height="${ph/2}" fill="#19e3c40e"/><rect x="${midX}" y="${mT}" width="${pw/2}" height="${ph/2}" fill="#7c5cff0e"/><rect x="${mL}" y="${midY}" width="${pw/2}" height="${ph/2}" fill="#ffd1660a"/><rect x="${midX}" y="${midY}" width="${pw/2}" height="${ph/2}" fill="#ffffff05"/>`;
+  svg+=`<text x="${mL+14}" y="${mT+26}" fill="#19e3c4" font-size="16" font-weight="700">⚡ Quick wins</text>`;
+  svg+=`<text x="${midX+pw/2-14}" y="${mT+26}" text-anchor="end" fill="#9b8bff" font-size="16" font-weight="700">🎯 Big bets</text>`;
+  svg+=`<text x="${mL+14}" y="${midY+ph/2-14}" fill="#ffd166" font-size="16" font-weight="700">🧩 Easy fillers</text>`;
+  svg+=`<text x="${midX+pw/2-14}" y="${midY+ph/2-14}" text-anchor="end" fill="#8a8caa" font-size="16" font-weight="700">🧊 Deprioritize</text>`;
+  svg+=`<rect x="${mL}" y="${mT}" width="${pw}" height="${ph}" fill="none" stroke="rgba(255,255,255,.1)" rx="10"/>`;
+  svg+=`<line x1="${midX}" y1="${mT}" x2="${midX}" y2="${mT+ph}" stroke="rgba(255,255,255,.08)" stroke-dasharray="4 6"/><line x1="${mL}" y1="${midY}" x2="${mL+pw}" y2="${midY}" stroke="rgba(255,255,255,.08)" stroke-dasharray="4 6"/>`;
+  svg+=`<text x="${mL+pw/2}" y="${H-14}" text-anchor="middle" fill="#a7a9c7" font-size="14">Difficulty →</text>`;
+  svg+=`<text x="${mL-18}" y="${mT-12}" fill="#a7a9c7" font-size="13">▲ Value</text>`;
+  svg+=`<text x="${mL+6}" y="${H-14}" fill="#6e7099" font-size="12">Easier</text><text x="${mL+pw-6}" y="${H-14}" text-anchor="end" fill="#6e7099" font-size="12">Harder</text>`;
+  svg+=`<g id="bubbleLayer"></g></svg>`;
+  host.innerHTML=`<div class="opp-legend">${legend}</div><div class="opp-wrap">${svg}<div class="opp-tip" id="oppTip"></div></div>`;
+  const layer=host.querySelector("#bubbleLayer"),tip=$("oppTip"),wrap=host.querySelector(".opp-wrap"),NS="http://www.w3.org/2000/svg";
+  const coord=p=>({x:mL+(p.difficulty/100)*pw,y:mT+ph-(p.value/100)*ph,r:5+(p.traffic/100)*15});
+  function tipHtml(p){const col=ICOL[p.intent];const bar=(l,v,c)=>`<span>${l}</span><span class="mbar"><i style="width:${v}%;background:${c}"></i></span><b>${v}</b>`;
+    return `<div class="tk">${escapeHtml(p.k)}</div><span class="badge" style="background:${col}22;color:${col}">${p.intent}</span><div class="mm">${bar("Value",p.value,"#19e3c4")}${bar("Difficulty",p.difficulty,"#ff7ba3")}${bar("Traffic",p.traffic,"#ffd166")}${bar("Score",p.score,"#7c5cff")}</div><div class="go">✨ Click to create a blog topic</div>`;}
+  function moveTip(ev){const r=wrap.getBoundingClientRect();let x=ev.clientX-r.left+14,y=ev.clientY-r.top+14;
+    if(x>r.width-tip.offsetWidth-10)x=ev.clientX-r.left-tip.offsetWidth-14;if(y>r.height-tip.offsetHeight-10)y=ev.clientY-r.top-tip.offsetHeight-14;
+    tip.style.left=Math.max(2,x)+"px";tip.style.top=Math.max(2,y)+"px";}
+  function drawBubbles(){
+    layer.innerHTML="";
+    const data=scored.filter(p=>oppActive.has(p.intent)).sort((a,b)=>a.score-b.score);
+    data.forEach((p,i)=>{const c=coord(p);const el=document.createElementNS(NS,"circle");
+      el.setAttribute("class","bub");el.setAttribute("cx",c.x.toFixed(1));el.setAttribute("cy",c.y.toFixed(1));el.setAttribute("r","0");
+      el.setAttribute("fill",ICOL[p.intent]+"66");el.setAttribute("stroke",ICOL[p.intent]);el.setAttribute("stroke-width","1.2");el.style.opacity="0";
+      el.addEventListener("mouseenter",()=>{el.setAttribute("r",(c.r*1.5).toFixed(1));el.setAttribute("stroke-width","2");tip.innerHTML=tipHtml(p);tip.classList.add("on");});
+      el.addEventListener("mousemove",moveTip);
+      el.addEventListener("mouseleave",()=>{el.setAttribute("r",c.r.toFixed(1));el.setAttribute("stroke-width","1.2");tip.classList.remove("on");});
+      el.addEventListener("click",()=>{addTopicFrom(p.k);el.setAttribute("stroke-width","3");setTimeout(()=>el.setAttribute("stroke-width","1.2"),260);});
+      layer.appendChild(el);setTimeout(()=>{el.style.opacity="1";el.setAttribute("r",c.r.toFixed(1));},100+i*14);});
+  }
+  host.querySelectorAll(".opp-chip").forEach(ch=>ch.addEventListener("click",()=>{const k=ch.dataset.int;
+    if(oppActive.has(k)&&oppActive.size>1)oppActive.delete(k);else oppActive.add(k);
+    ch.classList.toggle("off",!oppActive.has(k));drawBubbles();vibrate(6);}));
+  drawBubbles();
 }
 function renderCalendar(){
   const cal=$("insCal");if(!cal)return;cal.innerHTML="";
@@ -965,8 +998,11 @@ function svgRadar(cx,cy,r){
 function svgBubble(x,y,w,h,scored){
   let out=`<text x="${x}" y="${y-8}" fill="#fff" font-size="25" font-weight="700">Opportunity map</text>`;
   const px=x+56,py=y+18,pw=w-90,ph=h-78;
-  out+=`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.08)"/>`;
-  out+=`<rect x="${px}" y="${py}" width="${(pw*0.42).toFixed(0)}" height="${(ph*0.5).toFixed(0)}" fill="#19e3c411"/><text x="${px+14}" y="${py+28}" fill="#19e3c4" font-size="16" font-weight="700">★ Quick-win zone</text>`;
+  const hx=px+pw/2,hy=py+ph/2;
+  out+=`<rect x="${px}" y="${py}" width="${(pw/2).toFixed(0)}" height="${(ph/2).toFixed(0)}" fill="#19e3c40e"/><rect x="${hx.toFixed(0)}" y="${py}" width="${(pw/2).toFixed(0)}" height="${(ph/2).toFixed(0)}" fill="#7c5cff0e"/><rect x="${px}" y="${hy.toFixed(0)}" width="${(pw/2).toFixed(0)}" height="${(ph/2).toFixed(0)}" fill="#ffd1660a"/>`;
+  out+=`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="12" fill="none" stroke="rgba(255,255,255,.08)"/>`;
+  out+=`<line x1="${hx}" y1="${py}" x2="${hx}" y2="${py+ph}" stroke="rgba(255,255,255,.08)" stroke-dasharray="4 6"/><line x1="${px}" y1="${hy}" x2="${px+pw}" y2="${hy}" stroke="rgba(255,255,255,.08)" stroke-dasharray="4 6"/>`;
+  out+=`<text x="${px+12}" y="${py+26}" fill="#19e3c4" font-size="16" font-weight="700">Quick wins</text><text x="${px+pw-12}" y="${py+26}" text-anchor="end" fill="#9b8bff" font-size="16" font-weight="700">Big bets</text><text x="${px+12}" y="${py+ph-12}" fill="#ffd166" font-size="16" font-weight="700">Easy fillers</text><text x="${px+pw-12}" y="${py+ph-12}" text-anchor="end" fill="#8a8caa" font-size="16" font-weight="700">Deprioritize</text>`;
   out+=`<text x="${px+pw/2}" y="${py+ph+42}" text-anchor="middle" fill="#a7a9c7" font-size="16">Difficulty →</text>`;
   out+=`<text x="${x+18}" y="${py+ph/2}" text-anchor="middle" fill="#a7a9c7" font-size="16" transform="rotate(-90 ${x+18} ${py+ph/2})">Value →</text>`;
   const pts=[...scored].sort((a,b)=>b.score-a.score).slice(0,42);
@@ -993,101 +1029,12 @@ function exportScoredCsv(){const sc=CURRENT.scored||buildScores();if(!sc.length)
 $("insPng").addEventListener("click",downloadInfographic);
 $("insCsv").addEventListener("click",exportScoredCsv);
 
-/* ===================== keyword galaxy ===================== */
-const GINTENTS=[["local","📍 Local","#19e3c4"],["info","📝 Informational","#ffd166"],["commercial","🔎 Commercial","#9b8bff"],["transactional","🛒 Transactional","#ff7ba3"],["branded","🏷️ Branded","#7be0ff"]];
-let GAL={canvas:null,ctx:null,nodes:[],planets:[],raf:null,W:0,H:0,dpr:1,tf:{s:1,ox:0,oy:0},
-  pointer:{wx:0,wy:0,inside:false},pointers:new Map(),dragNode:null,panning:false,last:null,downAt:null,moved:false,pinch:null,hover:null};
-function startGalaxy(){const c=$("galaxyCanvas");GAL.canvas=c;GAL.ctx=c.getContext("2d");buildLegend();buildGalaxy();bindGalaxy();if(!GAL.raf)galaxyLoop();}
-function stopGalaxy(){if(GAL.raf){cancelAnimationFrame(GAL.raf);GAL.raf=null;}}
-function buildLegend(){const el=$("gxLegend");if(el)el.innerHTML=GINTENTS.map(g=>`<span class="lg"><i style="background:${g[2]}"></i>${g[1].replace(/^\S+\s/,"")}</span>`).join("");}
-function galaxyResize(){const c=GAL.canvas;if(!c)return;const rect=c.getBoundingClientRect();GAL.dpr=Math.min(2,window.devicePixelRatio||1);
-  c.width=Math.max(1,rect.width*GAL.dpr);c.height=Math.max(1,rect.height*GAL.dpr);GAL.W=rect.width;GAL.H=rect.height;}
-function buildGalaxy(){
-  if(!GAL.canvas)return;galaxyResize();GAL.tf={s:1,ox:0,oy:0};GAL.hover=null;
-  const cx=GAL.W/2,cy=GAL.H/2,R=Math.min(GAL.W,GAL.H)*0.34;
-  GAL.planets=GINTENTS.map((g,i)=>{const a=-Math.PI/2+i*2*Math.PI/GINTENTS.length;return {key:g[0],name:g[1],color:g[2],x:cx+Math.cos(a)*R,y:cy+Math.sin(a)*R};});
-  GAL.nodes=[];
-  GAL.planets.forEach(pl=>{const list=(CURRENT[pl.key]||[]).map(scoreOpportunity).sort((a,b)=>b.score-a.score).slice(0,18);
-    const max=list[0]?list[0].score:100;
-    list.forEach(it=>{const ang=Math.random()*Math.PI*2,dist=58+(1-it.score/max)*72+Math.random()*18;
-      GAL.nodes.push({text:it.k,intent:pl.key,planet:pl,col:pl.color,score:it.score,fs:11+(it.score/max)*11,
-        x:pl.x+Math.cos(ang)*dist,y:pl.y+Math.sin(ang)*dist,vx:0,vy:0,D:dist,w:0,h:0,fixed:false});});});
-}
-function galaxyStep(){
-  const N=GAL.nodes,pt=GAL.pointer;
-  for(let i=0;i<N.length;i++){const n=N[i];if(n.fixed)continue;
-    let dx=n.x-n.planet.x,dy=n.y-n.planet.y,d=Math.hypot(dx,dy)||.01;
-    const f=(d-n.D)*0.012;n.vx-=dx/d*f;n.vy-=dy/d*f;
-    n.vx+=-dy/d*0.02;n.vy+=dx/d*0.02;
-    if(pt.inside){let px=n.x-pt.wx,py=n.y-pt.wy,pd=Math.hypot(px,py);if(pd<150&&pd>1){const g=(150-pd)/150*0.6;n.vx-=px/pd*g;n.vy-=py/pd*g;}}
-  }
-  for(let i=0;i<N.length;i++){const a=N[i];for(let j=i+1;j<N.length;j++){const b=N[j];let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;const min=46;
-    if(d2<min*min&&d2>0.01){const d=Math.sqrt(d2),f=(min-d)/d*0.06,fx=dx*f,fy=dy*f;if(!a.fixed){a.vx+=fx;a.vy+=fy;}if(!b.fixed){b.vx-=fx;b.vy-=fy;}}}}
-  for(let i=0;i<N.length;i++){const n=N[i];if(n.fixed)continue;n.vx*=0.86;n.vy*=0.86;n.x+=n.vx;n.y+=n.vy;}
-}
-function galaxyLoop(){galaxyStep();galaxyDraw();GAL.raf=requestAnimationFrame(galaxyLoop);}
-function galaxyDraw(){
-  const ctx=GAL.ctx,tf=GAL.tf,dpr=GAL.dpr;if(!ctx)return;
-  ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,GAL.canvas.width,GAL.canvas.height);
-  ctx.setTransform(tf.s*dpr,0,0,tf.s*dpr,tf.ox*dpr,tf.oy*dpr);
-  GAL.planets.forEach(pl=>{const grd=ctx.createRadialGradient(pl.x,pl.y,2,pl.x,pl.y,92);grd.addColorStop(0,pl.color+"55");grd.addColorStop(1,pl.color+"00");
-    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(pl.x,pl.y,92,0,7);ctx.fill();
-    ctx.fillStyle=pl.color;ctx.beginPath();ctx.arc(pl.x,pl.y,7,0,7);ctx.fill();
-    ctx.font="700 15px Sora, sans-serif";ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="alphabetic";ctx.fillText(pl.name,pl.x,pl.y-18);});
-  ctx.lineWidth=1;GAL.nodes.forEach(n=>{ctx.strokeStyle=n.col+"22";ctx.beginPath();ctx.moveTo(n.planet.x,n.planet.y);ctx.lineTo(n.x,n.y);ctx.stroke();});
-  ctx.textAlign="left";ctx.textBaseline="middle";
-  GAL.nodes.forEach(n=>{const hov=n===GAL.hover;ctx.font=`${hov?"700 ":"600 "}${(n.fs+(hov?2:0)).toFixed(1)}px Sora, sans-serif`;
-    n.w=ctx.measureText(n.text).width;n.h=n.fs+6;
-    if(hov){ctx.shadowColor=n.col;ctx.shadowBlur=16;}else ctx.shadowBlur=0;
-    ctx.fillStyle=hov?"#fff":n.col;ctx.fillText(n.text,n.x-n.w/2,n.y);ctx.shadowBlur=0;});
-  if(GAL.hover){const n=GAL.hover,tp=topicFromKeyword(n.text,STATE),tx=n.x-n.w/2,ty=n.y+n.h+2;
-    ctx.font="600 12px Inter, sans-serif";const label="✨ "+tp.title,tw=ctx.measureText(label).width;
-    ctx.fillStyle="rgba(8,8,20,.92)";roundRect(ctx,tx-7,ty,tw+14,26,7);ctx.fill();ctx.strokeStyle=n.col+"66";ctx.stroke();
-    ctx.fillStyle="#fff";ctx.textBaseline="middle";ctx.fillText(label,tx,ty+13);}
-}
-function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-function screenToWorld(px,py){return {x:(px-GAL.tf.ox)/GAL.tf.s,y:(py-GAL.tf.oy)/GAL.tf.s};}
-function nodeAt(wx,wy){for(let i=GAL.nodes.length-1;i>=0;i--){const n=GAL.nodes[i];if(wx>=n.x-n.w/2-5&&wx<=n.x+n.w/2+5&&wy>=n.y-n.h/2-2&&wy<=n.y+n.h/2+2)return n;}return null;}
-function zoomAt(px,py,ns){const w=screenToWorld(px,py);GAL.tf.s=ns;GAL.tf.ox=px-w.x*ns;GAL.tf.oy=py-w.y*ns;}
-function bindGalaxy(){
-  const c=GAL.canvas;if(c._bound)return;c._bound=true;
-  c.addEventListener("pointerdown",e=>{try{c.setPointerCapture(e.pointerId);}catch(_){}GAL.pointers.set(e.pointerId,{x:e.offsetX,y:e.offsetY});
-    if(GAL.pointers.size===2){const ps=[...GAL.pointers.values()];GAL.pinch={d:Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y)||1,s:GAL.tf.s};GAL.dragNode=null;GAL.panning=false;return;}
-    const w=screenToWorld(e.offsetX,e.offsetY),n=nodeAt(w.x,w.y);GAL.downAt={x:e.offsetX,y:e.offsetY};GAL.moved=false;GAL.last={x:e.offsetX,y:e.offsetY};
-    if(n){GAL.dragNode=n;n.fixed=true;}else GAL.panning=true;});
-  c.addEventListener("pointermove",e=>{if(GAL.pointers.has(e.pointerId))GAL.pointers.set(e.pointerId,{x:e.offsetX,y:e.offsetY});
-    GAL.pointer.inside=true;const w=screenToWorld(e.offsetX,e.offsetY);GAL.pointer.wx=w.x;GAL.pointer.wy=w.y;
-    if(GAL.pinch&&GAL.pointers.size===2){const ps=[...GAL.pointers.values()];const nd=Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y);
-      const ns=Math.max(.4,Math.min(3,GAL.pinch.s*nd/GAL.pinch.d));zoomAt((ps[0].x+ps[1].x)/2,(ps[0].y+ps[1].y)/2,ns);return;}
-    if(GAL.downAt&&(Math.abs(e.offsetX-GAL.downAt.x)>4||Math.abs(e.offsetY-GAL.downAt.y)>4))GAL.moved=true;
-    if(GAL.dragNode){GAL.dragNode.x=w.x;GAL.dragNode.y=w.y;GAL.dragNode.vx=0;GAL.dragNode.vy=0;}
-    else if(GAL.panning&&GAL.last){GAL.tf.ox+=e.offsetX-GAL.last.x;GAL.tf.oy+=e.offsetY-GAL.last.y;GAL.last={x:e.offsetX,y:e.offsetY};}
-    else{GAL.hover=nodeAt(w.x,w.y);c.style.cursor=GAL.hover?"pointer":"grab";}});
-  const up=e=>{try{c.releasePointerCapture(e.pointerId);}catch(_){}GAL.pointers.delete(e.pointerId);if(GAL.pointers.size<2)GAL.pinch=null;
-    if(GAL.dragNode){GAL.dragNode.fixed=false;if(!GAL.moved)addTopicFrom(GAL.dragNode.text);GAL.dragNode=null;}
-    else if(GAL.panning&&!GAL.moved){const w=screenToWorld(e.offsetX,e.offsetY),n=nodeAt(w.x,w.y);if(n)addTopicFrom(n.text);}
-    GAL.panning=false;GAL.last=null;GAL.downAt=null;};
-  c.addEventListener("pointerup",up);c.addEventListener("pointercancel",up);
-  c.addEventListener("pointerleave",()=>{GAL.pointer.inside=false;GAL.hover=null;});
-  c.addEventListener("wheel",e=>{e.preventDefault();const ns=Math.max(.4,Math.min(3,GAL.tf.s*(e.deltaY<0?1.12:0.89)));zoomAt(e.offsetX,e.offsetY,ns);},{passive:false});
-  $("gxReset").addEventListener("click",buildGalaxy);
-  $("gxShuffle").addEventListener("click",()=>{GAL.nodes.forEach(n=>{const a=Math.random()*7;n.x=n.planet.x+Math.cos(a)*n.D;n.y=n.planet.y+Math.sin(a)*n.D;n.vx=n.vy=0;});vibrate(8);});
-  window.addEventListener("resize",()=>{if(galaxyOn)galaxyResize();});
-}
-
 /* ===================== tabs & view toggle ===================== */
 function selectTab(name){
   document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.tab===name));
   document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.dataset.panel===name));
 }
-$("tabs").addEventListener("click",e=>{const t=e.target.closest(".tab");if(!t)return;if(galaxyOn)setGalaxy(false);selectTab(t.dataset.tab);vibrate(6);});
-const cloudToggle=$("cloudToggle");let galaxyOn=false;
-function setGalaxy(on){galaxyOn=on;results.classList.toggle("galaxy-on",on);
-  cloudToggle.classList.toggle("on",on);cloudToggle.setAttribute("aria-checked",on?"true":"false");
-  if(on)startGalaxy();else stopGalaxy();}
-function toggleGalaxy(){if(!CURRENT.local){toast("Generate keywords first");return;}setGalaxy(!galaxyOn);vibrate(10);}
-cloudToggle.addEventListener("click",toggleGalaxy);
-cloudToggle.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleGalaxy();}});
+$("tabs").addEventListener("click",e=>{const t=e.target.closest(".tab");if(!t)return;selectTab(t.dataset.tab);vibrate(6);});
 
 /* ===================== EEAT + content modals ===================== */
 function loadEEAT(){try{return JSON.parse(localStorage.getItem("localrank_eeat"))||{experience:"",credentials:""};}catch(_){return {experience:"",credentials:""};}}
