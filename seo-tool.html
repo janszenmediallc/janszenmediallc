@@ -280,6 +280,54 @@ footer a{color:var(--c2);text-decoration:none}
 .article .ebox{background:rgba(255,209,102,.07);border:1px solid var(--line);border-left:3px solid var(--c4);border-radius:11px;padding:13px 15px;margin:18px 0 14px}
 .article .ebox h2{margin:0 0 6px;font-size:1rem}
 .article .cta{background:linear-gradient(120deg,rgba(25,227,196,.14),rgba(124,92,255,.14));border:1px solid var(--line);border-radius:13px;padding:15px;text-align:center;font-weight:600;margin-top:18px}
+
+/* insights tab accent */
+.tab[data-accent="insights"].on{color:#04040b;background:linear-gradient(120deg,#7be0ff,var(--c2));border-color:transparent}
+
+/* galaxy */
+.galaxy{display:none;position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,#0c0b22,#05050f);margin-bottom:18px}
+.results.galaxy-on .tabs,.results.galaxy-on .panel{display:none!important}
+.results.galaxy-on .galaxy{display:block;animation:fade .4s}
+#galaxyCanvas{display:block;width:100%;height:68vh;min-height:430px;touch-action:none;cursor:grab}
+#galaxyCanvas:active{cursor:grabbing}
+.gx-bar{position:absolute;top:12px;left:12px;right:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;z-index:2}
+.gx-bar .legend{display:flex;gap:10px;flex-wrap:wrap;background:rgba(8,8,20,.55);border:1px solid var(--line);border-radius:10px;padding:7px 11px;backdrop-filter:blur(6px)}
+.gx-bar .lg{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;color:var(--muted)}
+.gx-bar .lg i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.gx-bar .sp{flex:1}
+.gx-bar button{cursor:pointer;border:1px solid var(--line);background:rgba(8,8,20,.55);color:var(--ink);font-family:inherit;font-size:.74rem;font-weight:600;padding:7px 11px;border-radius:9px;backdrop-filter:blur(6px);transition:.2s}
+.gx-bar button:hover{border-color:var(--c2)}
+.gx-hint{position:absolute;bottom:12px;left:12px;right:12px;font-size:.72rem;color:var(--muted);background:rgba(8,8,20,.5);border:1px solid var(--line);border-radius:9px;padding:6px 10px;pointer-events:none;backdrop-filter:blur(6px);width:fit-content;max-width:calc(100% - 24px)}
+
+/* insights */
+.ins-hero{display:grid;gap:14px;grid-template-columns:1fr;margin-bottom:6px}
+@media(min-width:760px){.ins-hero{grid-template-columns:1fr 1.3fr}}
+.ins-card{background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:18px}
+.ins-score{display:flex;align-items:center;gap:18px}
+.ring{position:relative;width:120px;height:120px;flex:0 0 auto}
+.ring .rv{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .rv b{font-family:"Sora";font-size:1.9rem;line-height:1}
+.ring .rv small{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.ins-stats{display:flex;gap:10px;flex-wrap:wrap;flex:1}
+.stat{flex:1;min-width:84px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat b{font-family:"Sora";font-size:1.5rem;display:block;line-height:1}
+.stat span{font-size:.72rem;color:var(--muted)}
+.qw{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.qw li{display:grid;grid-template-columns:1fr auto;gap:5px 12px;align-items:center;font-size:.85rem;cursor:pointer}
+.qw li:hover .kw{color:var(--c2)}
+.qw .bar{grid-column:1/-1;height:6px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+.qw .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--c2),var(--c1));width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.qw .sc{font-family:"Sora";font-weight:700;color:var(--c2);font-size:.84rem}
+.ins-graphic{background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:8px;overflow:hidden}
+.ins-graphic svg{display:block;width:100%;height:auto;border-radius:10px}
+.cal{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:2px}
+@media(min-width:680px){.cal{grid-template-columns:repeat(4,1fr)}}
+.cal .wk{background:var(--glass);border:1px solid var(--line);border-radius:12px;padding:11px;cursor:pointer;transition:.2s}
+.cal .wk:hover{border-color:var(--c4);transform:translateY(-2px)}
+.cal .wk .wn{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--c4);font-weight:700;margin-bottom:5px}
+.cal .wk .wt{font-size:.78rem;line-height:1.3}
+.ins-actions{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 18px}
+.ins-h{font-family:"Sora";font-weight:700;font-size:1rem;margin:22px 0 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -327,8 +375,8 @@ footer a{color:var(--c2);text-decoration:none}
         <span class="tag live"><b id="sCount">0</b> keywords</span>
       </div>
       <div class="actions">
-        <div class="switch-wrap" id="cloudToggle" role="switch" aria-checked="false" tabindex="0" title="Toggle interactive keyword cloud">
-          <span>☁️ Cloud view</span><span class="switch"></span>
+        <div class="switch-wrap" id="cloudToggle" role="switch" aria-checked="false" tabindex="0" title="Toggle the interactive Keyword Galaxy">
+          <span>🌌 Galaxy view</span><span class="switch"></span>
         </div>
         <button class="act" id="copyAll">Copy tab</button>
         <button class="act" id="csv">Export CSV</button>
@@ -343,6 +391,14 @@ footer a{color:var(--c2);text-decoration:none}
       <button class="tab" data-accent="transactional" data-tab="transactional" type="button">🛒 Transactional <span class="n" id="nTransactional"></span></button>
       <button class="tab" data-accent="branded" data-tab="branded" type="button">🏷️ Branded <span class="n" id="nBranded"></span></button>
       <button class="tab" data-accent="pagemap" data-tab="pagemap" type="button">🗺️ Page Map</button>
+      <button class="tab" data-accent="insights" data-tab="insights" type="button">📊 Insights</button>
+    </div>
+
+    <div class="galaxy" id="galaxy">
+      <div class="gx-bar"><div class="legend" id="gxLegend"></div><span class="sp"></span>
+        <button id="gxShuffle" type="button">🔀 Shuffle</button><button id="gxReset" type="button">⟳ Reset view</button></div>
+      <canvas id="galaxyCanvas"></canvas>
+      <div class="gx-hint">Drag to pan · scroll / pinch to zoom · drag a star to move it · tap a star to make a blog topic ✨</div>
     </div>
 
     <div class="panel on" data-panel="local"><p class="panel-lead">High-intent "near me" and "[city]" searches — power your <b>homepage</b> and <b>service-area pages</b>. Tap any keyword to spin it into a blog topic ✨.</p><div class="view"></div></div>
@@ -352,6 +408,14 @@ footer a{color:var(--c2);text-decoration:none}
     <div class="panel" data-panel="transactional"><p class="panel-lead">Ready-to-buy searches — your <b>service pages</b> and conversion landing pages.</p><div class="view"></div></div>
     <div class="panel" data-panel="branded"><p class="panel-lead">Searches for your business by name — own your <b>brand SERP</b>.</p><div class="view"></div></div>
     <div class="panel" data-panel="pagemap"><p class="panel-lead">Your keywords organized into the pages you should actually build.</p><div id="serviceAreas"></div><div class="pm-grid" id="pmGrid"></div></div>
+    <div class="panel" data-panel="insights"><p class="panel-lead">Your keyword strategy as shareable infographics — opportunity scores, a buyer-journey funnel, an opportunity map, and a 12-week content calendar.</p>
+      <div class="ins-actions"><button class="act" id="insPng" type="button">⬇️ Download infographic (PNG)</button><button class="act" id="insCsv" type="button">Export scored CSV</button></div>
+      <div id="insHero"></div>
+      <div class="ins-h">🗓️ 12-week content calendar <span style="font-weight:400;color:var(--muted);font-size:.74rem">tap a week to draft it</span></div>
+      <div class="cal" id="insCal"></div>
+      <div class="ins-h">📈 Shareable infographic</div>
+      <div class="ins-graphic" id="insGraphic"></div>
+    </div>
   </section>
 </div>
 
@@ -727,16 +791,16 @@ function run(){
   ["local","info","commercial","transactional","branded"].forEach(renderPanel);
   renderTopics();renderPageMap();
   STATE.areas=STATE.city?[STATE.city]:[];renderServiceAreas();loadNearby();
+  buildScores();renderInsights();if(galaxyOn)buildGalaxy();
   results.classList.add("show");selectTab("local");
   results.scrollIntoView({behavior:"smooth",block:"start"});confetti();vibrate(18);
 }
 
 function renderPanel(name){
-  const wrap=document.querySelector(`.panel[data-panel="${name}"] .view`);wrap.innerHTML="";
+  const wrap=document.querySelector(`.panel[data-panel="${name}"] .view`);if(!wrap)return;
+  wrap.className="view chips";wrap.innerHTML="";
   const list=CURRENT[name]||[];if(!list.length){wrap.innerHTML='<div class="empty">No keywords here yet.</div>';return;}
-  if(viewMode==="cloud"){wrap.className="view cloud";const max=Math.max(...list.map(scoreKeyword));
-    list.forEach((k,i)=>wrap.appendChild(cloudEl(k,name,i,max)));}
-  else{wrap.className="view chips";list.forEach((k,i)=>wrap.appendChild(chipEl(k,name,i)));}
+  list.forEach((k,i)=>wrap.appendChild(chipEl(k,name,i)));
 }
 function chipEl(text,accentName,i){
   const c=document.createElement("button");c.className="chip";c.type="button";
@@ -799,20 +863,231 @@ function renderPageMap(){
   });
 }
 
+/* ===================== opportunity scoring ===================== */
+function scoreOpportunity(k){
+  const words=k.split(" ").length;let value=38;
+  if(/near me|hire|book|free quote|estimate|same day|emergency|schedule|financing/.test(k))value+=46;
+  else if(/best|top|reviews|compare|prices|cost estimate|cheap|quotes/.test(k))value+=32;
+  else if(/how much|cost|price|average/.test(k))value+=26;
+  else if(/how to|what|tips|ideas|signs|worth|guide|benefits|questions/.test(k))value+=14;
+  if(/\[city\]|\bin |\bnear /.test(k))value+=12;
+  value=Math.max(10,Math.min(100,value));
+  let diff=72-Math.min(42,(words-1)*8);
+  if(/near me/.test(k))diff+=8;if(/\[city\]|\bin /.test(k))diff-=12;if(words>=5)diff-=10;if(/best|top/.test(k))diff+=6;
+  diff=Math.max(8,Math.min(95,diff));
+  let traffic=Math.round(value*0.45+(words<=3?34:12)+(/near me|cost|best|reviews/.test(k)?18:0));
+  traffic=Math.max(5,Math.min(100,traffic));
+  const score=Math.round(Math.max(0,Math.min(100,value*0.6+(100-diff)*0.4)));
+  return {k,value,difficulty:diff,traffic,score,words};
+}
+function buildScores(){
+  const map={local:CURRENT.local||[],info:CURRENT.info||[],commercial:CURRENT.commercial||[],transactional:CURRENT.transactional||[],branded:CURRENT.branded||[]};
+  const scored=[];Object.keys(map).forEach(intent=>map[intent].forEach(k=>{const s=scoreOpportunity(k);s.intent=intent;scored.push(s);}));
+  CURRENT.scored=scored;return scored;
+}
+
+/* ===================== insights dashboard ===================== */
+function animateCount(el,to,suffix){if(!el)return;let t0=null;const dur=950;function step(ts){if(!t0)t0=ts;const p=Math.min(1,(ts-t0)/dur);el.textContent=Math.round((1-Math.pow(1-p,3))*to)+(suffix||"");if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
+function renderInsights(){
+  const scored=CURRENT.scored||buildScores();if(!scored.length)return;
+  const overall=Math.round(scored.reduce((a,b)=>a+b.score,0)/scored.length);
+  const traffic=Math.round(scored.reduce((a,b)=>a+b.traffic,0)/10);
+  const quickWins=[...scored].sort((a,b)=>b.score-a.score||a.difficulty-b.difficulty).slice(0,10);
+  const circ=2*Math.PI*52;
+  $("insHero").innerHTML=`<div class="ins-hero">
+    <div class="ins-card ins-score">
+      <div class="ring"><svg width="120" height="120" viewBox="0 0 120 120" style="transform:rotate(-90deg)"><circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="11"/><circle id="ringArc" cx="60" cy="60" r="52" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ}"/><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19e3c4"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs></svg><div class="rv"><b id="ovScore">0</b><small>Opp. score</small></div></div>
+      <div class="ins-stats"><div class="stat"><b id="stKw">0</b><span>keywords</span></div><div class="stat"><b id="stTopics">0</b><span>blog topics</span></div><div class="stat"><b id="stTraffic">0</b><span>traffic index*</span></div></div>
+    </div>
+    <div class="ins-card"><div class="ins-h" style="margin:0 0 12px">⚡ Top 10 quick wins <span style="font-weight:400;color:var(--muted);font-size:.72rem">high value · low difficulty</span></div><ul class="qw" id="qwList"></ul></div>
+  </div>`;
+  const arc=$("ringArc");requestAnimationFrame(()=>{arc.style.transition="stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1)";arc.style.strokeDashoffset=circ*(1-overall/100);});
+  animateCount($("ovScore"),overall);animateCount($("stKw"),scored.length);animateCount($("stTopics"),(CURRENT.topics||[]).length);animateCount($("stTraffic"),traffic);
+  const ql=$("qwList");ql.innerHTML="";const maxS=quickWins[0]?quickWins[0].score:100;
+  quickWins.forEach((w,i)=>{const li=document.createElement("li");
+    li.innerHTML=`<span class="kw">${escapeHtml(w.k)}</span><span class="sc">${w.score}</span><span class="bar"><i></i></span>`;
+    li.title="Click → blog topic";li.addEventListener("click",()=>addTopicFrom(w.k));
+    ql.appendChild(li);setTimeout(()=>{li.querySelector("i").style.width=Math.round(w.score/maxS*100)+"%";},120+i*60);});
+  renderCalendar();
+  const g=$("insGraphic");g.innerHTML="";g.appendChild(buildInfographic(overall,traffic,scored));
+}
+function renderCalendar(){
+  const cal=$("insCal");if(!cal)return;cal.innerHTML="";
+  const topics=(CURRENT.topics||[]).slice(0,12);
+  if(!topics.length){cal.innerHTML='<div class="empty">Generate topics to fill your calendar.</div>';return;}
+  topics.forEach((t,i)=>{const w=document.createElement("div");w.className="wk";
+    w.innerHTML=`<div class="wn">Week ${i+1}</div><div class="wt">${escapeHtml(t.title)}</div>`;
+    w.addEventListener("click",()=>openEEAT(t));cal.appendChild(w);});
+}
+const ICOL={local:"#19e3c4",info:"#ffd166",commercial:"#9b8bff",transactional:"#ff7ba3",branded:"#7be0ff"};
+function escapeXml(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function buildInfographic(overall,traffic,scored){
+  const W=1000,H=1300;const ind=STATE.industry?STATE.industry.label:"Local Business";
+  const city=STATE.city||"[city]";const date=new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+  let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" font-family="Sora, Arial, sans-serif">`;
+  s+=`<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0c0b22"/><stop offset="1" stop-color="#070711"/></linearGradient><linearGradient id="acc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#19e3c4"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs>`;
+  s+=`<rect width="${W}" height="${H}" rx="28" fill="url(#bg)"/><rect x="1" y="1" width="${W-2}" height="${H-2}" rx="27" fill="none" stroke="rgba(255,255,255,.1)"/>`;
+  s+=`<text x="48" y="76" fill="#fff" font-size="42" font-weight="800">Local SEO Snapshot</text>`;
+  s+=`<text x="48" y="112" fill="#a7a9c7" font-size="22">${escapeXml(ind)} · ${escapeXml(city)} · ${date}</text>`;
+  s+=`<text x="${W-48}" y="72" text-anchor="end" fill="#19e3c4" font-size="24" font-weight="800">LocalRank</text><text x="${W-48}" y="100" text-anchor="end" fill="#a7a9c7" font-size="16">by Janszen Media</text>`;
+  s+=`<line x1="48" y1="136" x2="${W-48}" y2="136" stroke="rgba(255,255,255,.1)"/>`;
+  s+=svgRing(160,300,82,overall,"Opp. score");
+  const tiles=[["Keywords",scored.length],["Blog topics",(CURRENT.topics||[]).length],["Traffic index*",traffic]];
+  tiles.forEach((t,i)=>{const x=320+i*222;s+=`<rect x="${x}" y="218" width="200" height="164" rx="16" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)"/><text x="${x+22}" y="312" fill="#fff" font-size="54" font-weight="800">${t[1]}</text><text x="${x+22}" y="348" fill="#a7a9c7" font-size="19">${t[0]}</text>`;});
+  s+=svgFunnel(48,470,430,scored);
+  s+=svgRadar(745,640,150);
+  s+=svgBubble(48,840,W-96,340,scored);
+  s+=`<text x="48" y="${H-38}" fill="#6e7099" font-size="16">*Directional estimates from on-page signals — not live search volume. Generated by LocalRank.</text>`;
+  s+=`</svg>`;
+  const div=document.createElement("div");div.innerHTML=s;return div.firstChild;
+}
+function svgRing(cx,cy,r,pct,label){const c=2*Math.PI*r;const off=c*(1-pct/100);
+  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="16"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="url(#acc)" stroke-width="16" stroke-linecap="round" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/><text x="${cx}" y="${cy+6}" text-anchor="middle" fill="#fff" font-size="50" font-weight="800">${pct}</text><text x="${cx}" y="${cy+38}" text-anchor="middle" fill="#a7a9c7" font-size="16">${label}</text>`;}
+function svgFunnel(x,y,w,scored){
+  const stages=[["Informational (TOFU)","info"],["Commercial (MOFU)","commercial"],["Transactional (BOFU)","transactional"]];
+  const counts=stages.map(st=>scored.filter(k=>k.intent===st[1]).length);
+  let out=`<text x="${x}" y="${y-8}" fill="#fff" font-size="25" font-weight="700">Buyer-journey funnel</text>`;
+  const h=90,gap=16;
+  stages.forEach((st,i)=>{const cnt=counts[i];const wTop=w*(0.55+0.45*(1-i/3)),wBot=w*(0.55+0.45*(1-(i+1)/3));
+    const yy=y+i*(h+gap),cx=x+w/2,x1=cx-wTop/2,x2=cx+wTop/2,x3=cx+wBot/2,x4=cx-wBot/2;
+    out+=`<polygon points="${x1.toFixed(0)},${yy} ${x2.toFixed(0)},${yy} ${x3.toFixed(0)},${yy+h} ${x4.toFixed(0)},${yy+h}" fill="${ICOL[st[1]]}22" stroke="${ICOL[st[1]]}" stroke-width="1.5"/><text x="${cx}" y="${yy+h/2-2}" text-anchor="middle" fill="#fff" font-size="19" font-weight="700">${st[0]}</text><text x="${cx}" y="${yy+h/2+22}" text-anchor="middle" fill="${ICOL[st[1]]}" font-size="17" font-weight="700">${cnt} keywords</text>`;});
+  return out;
+}
+function svgRadar(cx,cy,r){
+  const axes=[["Homepage",(CURRENT.local||[]).length],["Service",(CURRENT.transactional||[]).length],["Cost/Blog",(CURRENT.info||[]).length],["Compare",(CURRENT.commercial||[]).length],["Brand",(CURRENT.branded||[]).length],["Areas",(CURRENT.local||[]).filter(k=>/\bin |\bnear /.test(k)).length]];
+  const n=axes.length,max=Math.max(1,...axes.map(a=>a[1]));
+  let out=`<text x="${cx}" y="${cy-r-30}" text-anchor="middle" fill="#fff" font-size="25" font-weight="700">Page coverage</text>`;
+  for(let g=1;g<=3;g++){const rr=r*g/3;let pts="";for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;pts+=`${(cx+Math.cos(a)*rr).toFixed(1)},${(cy+Math.sin(a)*rr).toFixed(1)} `;}out+=`<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,.08)"/>`;}
+  let dp="";axes.forEach((ax,i)=>{const a=-Math.PI/2+i*2*Math.PI/n,rr=r*Math.min(1,ax[1]/max);dp+=`${(cx+Math.cos(a)*rr).toFixed(1)},${(cy+Math.sin(a)*rr).toFixed(1)} `;
+    const la=cx+Math.cos(a)*(r+24),lb=cy+Math.sin(a)*(r+24);out+=`<text x="${la.toFixed(1)}" y="${(lb+4).toFixed(1)}" text-anchor="middle" fill="#a7a9c7" font-size="14">${ax[0]}</text>`;});
+  out+=`<polygon points="${dp}" fill="#7c5cff33" stroke="#7c5cff" stroke-width="2"/>`;return out;
+}
+function svgBubble(x,y,w,h,scored){
+  let out=`<text x="${x}" y="${y-8}" fill="#fff" font-size="25" font-weight="700">Opportunity map</text>`;
+  const px=x+56,py=y+18,pw=w-90,ph=h-78;
+  out+=`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="12" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.08)"/>`;
+  out+=`<rect x="${px}" y="${py}" width="${(pw*0.42).toFixed(0)}" height="${(ph*0.5).toFixed(0)}" fill="#19e3c411"/><text x="${px+14}" y="${py+28}" fill="#19e3c4" font-size="16" font-weight="700">★ Quick-win zone</text>`;
+  out+=`<text x="${px+pw/2}" y="${py+ph+42}" text-anchor="middle" fill="#a7a9c7" font-size="16">Difficulty →</text>`;
+  out+=`<text x="${x+18}" y="${py+ph/2}" text-anchor="middle" fill="#a7a9c7" font-size="16" transform="rotate(-90 ${x+18} ${py+ph/2})">Value →</text>`;
+  const pts=[...scored].sort((a,b)=>b.score-a.score).slice(0,42);
+  pts.forEach(p=>{const bx=px+(p.difficulty/100)*pw,by=py+ph-(p.value/100)*ph,r=4+(p.traffic/100)*14;
+    out+=`<circle cx="${bx.toFixed(1)}" cy="${by.toFixed(1)}" r="${r.toFixed(1)}" fill="${ICOL[p.intent]}55" stroke="${ICOL[p.intent]}" stroke-width="1.2"/>`;});
+  const leg=[["Local","local"],["Info","info"],["Commercial","commercial"],["Transactional","transactional"],["Brand","branded"]];
+  leg.forEach((l,i)=>{const lx=px+i*168;out+=`<circle cx="${lx+5}" cy="${py+ph+64}" r="6" fill="${ICOL[l[1]]}"/><text x="${lx+18}" y="${py+ph+69}" fill="#a7a9c7" font-size="15">${l[0]}</text>`;});
+  return out;
+}
+function downloadInfographic(){
+  const svg=$("insGraphic").querySelector("svg");if(!svg){toast("Generate first");return;}
+  const xml=new XMLSerializer().serializeToString(svg);
+  const url="data:image/svg+xml;base64,"+btoa(unescape(encodeURIComponent(xml)));
+  const img=new Image();img.onload=()=>{const vb=svg.viewBox.baseVal,scale=2,c=document.createElement("canvas");
+    c.width=vb.width*scale;c.height=vb.height*scale;const cx=c.getContext("2d");cx.scale(scale,scale);cx.drawImage(img,0,0);
+    c.toBlob(b=>{const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=`localrank-snapshot-${slugify(STATE.city||"local")}.png`;a.click();URL.revokeObjectURL(u);toast("Infographic downloaded");},"image/png");};
+  img.onerror=()=>toast("Export failed — try again");img.src=url;
+}
+function exportScoredCsv(){const sc=CURRENT.scored||buildScores();if(!sc.length){toast("Generate first");return;}
+  let rows=[["keyword","intent","value","difficulty","traffic_index","opportunity_score"]];
+  [...sc].sort((a,b)=>b.score-a.score).forEach(s=>rows.push([s.k,s.intent,s.value,s.difficulty,s.traffic,s.score]));
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv"});const u=URL.createObjectURL(blob);const a=document.createElement("a");a.href=u;a.download=`localrank-scored-${slugify(STATE.city||"local")}.csv`;a.click();URL.revokeObjectURL(u);toast("Scored CSV downloaded");}
+$("insPng").addEventListener("click",downloadInfographic);
+$("insCsv").addEventListener("click",exportScoredCsv);
+
+/* ===================== keyword galaxy ===================== */
+const GINTENTS=[["local","📍 Local","#19e3c4"],["info","📝 Informational","#ffd166"],["commercial","🔎 Commercial","#9b8bff"],["transactional","🛒 Transactional","#ff7ba3"],["branded","🏷️ Branded","#7be0ff"]];
+let GAL={canvas:null,ctx:null,nodes:[],planets:[],raf:null,W:0,H:0,dpr:1,tf:{s:1,ox:0,oy:0},
+  pointer:{wx:0,wy:0,inside:false},pointers:new Map(),dragNode:null,panning:false,last:null,downAt:null,moved:false,pinch:null,hover:null};
+function startGalaxy(){const c=$("galaxyCanvas");GAL.canvas=c;GAL.ctx=c.getContext("2d");buildLegend();buildGalaxy();bindGalaxy();if(!GAL.raf)galaxyLoop();}
+function stopGalaxy(){if(GAL.raf){cancelAnimationFrame(GAL.raf);GAL.raf=null;}}
+function buildLegend(){const el=$("gxLegend");if(el)el.innerHTML=GINTENTS.map(g=>`<span class="lg"><i style="background:${g[2]}"></i>${g[1].replace(/^\S+\s/,"")}</span>`).join("");}
+function galaxyResize(){const c=GAL.canvas;if(!c)return;const rect=c.getBoundingClientRect();GAL.dpr=Math.min(2,window.devicePixelRatio||1);
+  c.width=Math.max(1,rect.width*GAL.dpr);c.height=Math.max(1,rect.height*GAL.dpr);GAL.W=rect.width;GAL.H=rect.height;}
+function buildGalaxy(){
+  if(!GAL.canvas)return;galaxyResize();GAL.tf={s:1,ox:0,oy:0};GAL.hover=null;
+  const cx=GAL.W/2,cy=GAL.H/2,R=Math.min(GAL.W,GAL.H)*0.34;
+  GAL.planets=GINTENTS.map((g,i)=>{const a=-Math.PI/2+i*2*Math.PI/GINTENTS.length;return {key:g[0],name:g[1],color:g[2],x:cx+Math.cos(a)*R,y:cy+Math.sin(a)*R};});
+  GAL.nodes=[];
+  GAL.planets.forEach(pl=>{const list=(CURRENT[pl.key]||[]).map(scoreOpportunity).sort((a,b)=>b.score-a.score).slice(0,18);
+    const max=list[0]?list[0].score:100;
+    list.forEach(it=>{const ang=Math.random()*Math.PI*2,dist=58+(1-it.score/max)*72+Math.random()*18;
+      GAL.nodes.push({text:it.k,intent:pl.key,planet:pl,col:pl.color,score:it.score,fs:11+(it.score/max)*11,
+        x:pl.x+Math.cos(ang)*dist,y:pl.y+Math.sin(ang)*dist,vx:0,vy:0,D:dist,w:0,h:0,fixed:false});});});
+}
+function galaxyStep(){
+  const N=GAL.nodes,pt=GAL.pointer;
+  for(let i=0;i<N.length;i++){const n=N[i];if(n.fixed)continue;
+    let dx=n.x-n.planet.x,dy=n.y-n.planet.y,d=Math.hypot(dx,dy)||.01;
+    const f=(d-n.D)*0.012;n.vx-=dx/d*f;n.vy-=dy/d*f;
+    n.vx+=-dy/d*0.02;n.vy+=dx/d*0.02;
+    if(pt.inside){let px=n.x-pt.wx,py=n.y-pt.wy,pd=Math.hypot(px,py);if(pd<150&&pd>1){const g=(150-pd)/150*0.6;n.vx-=px/pd*g;n.vy-=py/pd*g;}}
+  }
+  for(let i=0;i<N.length;i++){const a=N[i];for(let j=i+1;j<N.length;j++){const b=N[j];let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy;const min=46;
+    if(d2<min*min&&d2>0.01){const d=Math.sqrt(d2),f=(min-d)/d*0.06,fx=dx*f,fy=dy*f;if(!a.fixed){a.vx+=fx;a.vy+=fy;}if(!b.fixed){b.vx-=fx;b.vy-=fy;}}}}
+  for(let i=0;i<N.length;i++){const n=N[i];if(n.fixed)continue;n.vx*=0.86;n.vy*=0.86;n.x+=n.vx;n.y+=n.vy;}
+}
+function galaxyLoop(){galaxyStep();galaxyDraw();GAL.raf=requestAnimationFrame(galaxyLoop);}
+function galaxyDraw(){
+  const ctx=GAL.ctx,tf=GAL.tf,dpr=GAL.dpr;if(!ctx)return;
+  ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,GAL.canvas.width,GAL.canvas.height);
+  ctx.setTransform(tf.s*dpr,0,0,tf.s*dpr,tf.ox*dpr,tf.oy*dpr);
+  GAL.planets.forEach(pl=>{const grd=ctx.createRadialGradient(pl.x,pl.y,2,pl.x,pl.y,92);grd.addColorStop(0,pl.color+"55");grd.addColorStop(1,pl.color+"00");
+    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(pl.x,pl.y,92,0,7);ctx.fill();
+    ctx.fillStyle=pl.color;ctx.beginPath();ctx.arc(pl.x,pl.y,7,0,7);ctx.fill();
+    ctx.font="700 15px Sora, sans-serif";ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="alphabetic";ctx.fillText(pl.name,pl.x,pl.y-18);});
+  ctx.lineWidth=1;GAL.nodes.forEach(n=>{ctx.strokeStyle=n.col+"22";ctx.beginPath();ctx.moveTo(n.planet.x,n.planet.y);ctx.lineTo(n.x,n.y);ctx.stroke();});
+  ctx.textAlign="left";ctx.textBaseline="middle";
+  GAL.nodes.forEach(n=>{const hov=n===GAL.hover;ctx.font=`${hov?"700 ":"600 "}${(n.fs+(hov?2:0)).toFixed(1)}px Sora, sans-serif`;
+    n.w=ctx.measureText(n.text).width;n.h=n.fs+6;
+    if(hov){ctx.shadowColor=n.col;ctx.shadowBlur=16;}else ctx.shadowBlur=0;
+    ctx.fillStyle=hov?"#fff":n.col;ctx.fillText(n.text,n.x-n.w/2,n.y);ctx.shadowBlur=0;});
+  if(GAL.hover){const n=GAL.hover,tp=topicFromKeyword(n.text,STATE),tx=n.x-n.w/2,ty=n.y+n.h+2;
+    ctx.font="600 12px Inter, sans-serif";const label="✨ "+tp.title,tw=ctx.measureText(label).width;
+    ctx.fillStyle="rgba(8,8,20,.92)";roundRect(ctx,tx-7,ty,tw+14,26,7);ctx.fill();ctx.strokeStyle=n.col+"66";ctx.stroke();
+    ctx.fillStyle="#fff";ctx.textBaseline="middle";ctx.fillText(label,tx,ty+13);}
+}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function screenToWorld(px,py){return {x:(px-GAL.tf.ox)/GAL.tf.s,y:(py-GAL.tf.oy)/GAL.tf.s};}
+function nodeAt(wx,wy){for(let i=GAL.nodes.length-1;i>=0;i--){const n=GAL.nodes[i];if(wx>=n.x-n.w/2-5&&wx<=n.x+n.w/2+5&&wy>=n.y-n.h/2-2&&wy<=n.y+n.h/2+2)return n;}return null;}
+function zoomAt(px,py,ns){const w=screenToWorld(px,py);GAL.tf.s=ns;GAL.tf.ox=px-w.x*ns;GAL.tf.oy=py-w.y*ns;}
+function bindGalaxy(){
+  const c=GAL.canvas;if(c._bound)return;c._bound=true;
+  c.addEventListener("pointerdown",e=>{try{c.setPointerCapture(e.pointerId);}catch(_){}GAL.pointers.set(e.pointerId,{x:e.offsetX,y:e.offsetY});
+    if(GAL.pointers.size===2){const ps=[...GAL.pointers.values()];GAL.pinch={d:Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y)||1,s:GAL.tf.s};GAL.dragNode=null;GAL.panning=false;return;}
+    const w=screenToWorld(e.offsetX,e.offsetY),n=nodeAt(w.x,w.y);GAL.downAt={x:e.offsetX,y:e.offsetY};GAL.moved=false;GAL.last={x:e.offsetX,y:e.offsetY};
+    if(n){GAL.dragNode=n;n.fixed=true;}else GAL.panning=true;});
+  c.addEventListener("pointermove",e=>{if(GAL.pointers.has(e.pointerId))GAL.pointers.set(e.pointerId,{x:e.offsetX,y:e.offsetY});
+    GAL.pointer.inside=true;const w=screenToWorld(e.offsetX,e.offsetY);GAL.pointer.wx=w.x;GAL.pointer.wy=w.y;
+    if(GAL.pinch&&GAL.pointers.size===2){const ps=[...GAL.pointers.values()];const nd=Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y);
+      const ns=Math.max(.4,Math.min(3,GAL.pinch.s*nd/GAL.pinch.d));zoomAt((ps[0].x+ps[1].x)/2,(ps[0].y+ps[1].y)/2,ns);return;}
+    if(GAL.downAt&&(Math.abs(e.offsetX-GAL.downAt.x)>4||Math.abs(e.offsetY-GAL.downAt.y)>4))GAL.moved=true;
+    if(GAL.dragNode){GAL.dragNode.x=w.x;GAL.dragNode.y=w.y;GAL.dragNode.vx=0;GAL.dragNode.vy=0;}
+    else if(GAL.panning&&GAL.last){GAL.tf.ox+=e.offsetX-GAL.last.x;GAL.tf.oy+=e.offsetY-GAL.last.y;GAL.last={x:e.offsetX,y:e.offsetY};}
+    else{GAL.hover=nodeAt(w.x,w.y);c.style.cursor=GAL.hover?"pointer":"grab";}});
+  const up=e=>{try{c.releasePointerCapture(e.pointerId);}catch(_){}GAL.pointers.delete(e.pointerId);if(GAL.pointers.size<2)GAL.pinch=null;
+    if(GAL.dragNode){GAL.dragNode.fixed=false;if(!GAL.moved)addTopicFrom(GAL.dragNode.text);GAL.dragNode=null;}
+    else if(GAL.panning&&!GAL.moved){const w=screenToWorld(e.offsetX,e.offsetY),n=nodeAt(w.x,w.y);if(n)addTopicFrom(n.text);}
+    GAL.panning=false;GAL.last=null;GAL.downAt=null;};
+  c.addEventListener("pointerup",up);c.addEventListener("pointercancel",up);
+  c.addEventListener("pointerleave",()=>{GAL.pointer.inside=false;GAL.hover=null;});
+  c.addEventListener("wheel",e=>{e.preventDefault();const ns=Math.max(.4,Math.min(3,GAL.tf.s*(e.deltaY<0?1.12:0.89)));zoomAt(e.offsetX,e.offsetY,ns);},{passive:false});
+  $("gxReset").addEventListener("click",buildGalaxy);
+  $("gxShuffle").addEventListener("click",()=>{GAL.nodes.forEach(n=>{const a=Math.random()*7;n.x=n.planet.x+Math.cos(a)*n.D;n.y=n.planet.y+Math.sin(a)*n.D;n.vx=n.vy=0;});vibrate(8);});
+  window.addEventListener("resize",()=>{if(galaxyOn)galaxyResize();});
+}
+
 /* ===================== tabs & view toggle ===================== */
 function selectTab(name){
   document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.tab===name));
   document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.dataset.panel===name));
-  const kwTab=["local","info","commercial","transactional","branded"].includes(name);
-  $("cloudToggle").style.display=kwTab?"":"none";
 }
-$("tabs").addEventListener("click",e=>{const t=e.target.closest(".tab");if(!t)return;selectTab(t.dataset.tab);vibrate(6);});
-const cloudToggle=$("cloudToggle");
-function toggleCloud(){viewMode=viewMode==="cloud"?"chips":"cloud";
-  cloudToggle.classList.toggle("on",viewMode==="cloud");cloudToggle.setAttribute("aria-checked",viewMode==="cloud");
-  if(CURRENT.local)["local","info","commercial","transactional","branded"].forEach(renderPanel);vibrate(10);}
-cloudToggle.addEventListener("click",toggleCloud);
-cloudToggle.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleCloud();}});
+$("tabs").addEventListener("click",e=>{const t=e.target.closest(".tab");if(!t)return;if(galaxyOn)setGalaxy(false);selectTab(t.dataset.tab);vibrate(6);});
+const cloudToggle=$("cloudToggle");let galaxyOn=false;
+function setGalaxy(on){galaxyOn=on;results.classList.toggle("galaxy-on",on);
+  cloudToggle.classList.toggle("on",on);cloudToggle.setAttribute("aria-checked",on?"true":"false");
+  if(on)startGalaxy();else stopGalaxy();}
+function toggleGalaxy(){if(!CURRENT.local){toast("Generate keywords first");return;}setGalaxy(!galaxyOn);vibrate(10);}
+cloudToggle.addEventListener("click",toggleGalaxy);
+cloudToggle.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleGalaxy();}});
 
 /* ===================== EEAT + content modals ===================== */
 function loadEEAT(){try{return JSON.parse(localStorage.getItem("localrank_eeat"))||{experience:"",credentials:""};}catch(_){return {experience:"",credentials:""};}}
