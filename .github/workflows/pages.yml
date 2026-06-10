@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - claude/physical-therapy-website-HpMIq
+      - claude/local-seo-keyword-tool-ely7m2
       - main
   workflow_dispatch:
 
